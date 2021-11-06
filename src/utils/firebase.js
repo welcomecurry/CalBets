@@ -9,7 +9,6 @@ import {
   GoogleAuthProvider,
   linkWithCredential,
   onAuthStateChanged,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -158,19 +157,6 @@ class Firebase {
     }
   };
 
-  sendEmailVerification = async (onError) => {
-    const user = this.auth.currentUser;
-    try {
-      await sendEmailVerification(user, {
-        url: window.location.href,
-        handleCodeInApp: true,
-      });
-    } catch (error) {
-      onError && onError(error);
-      console.log("sendEmailVerification failed: ", error.message);
-    }
-  };
-
   updateUserDisplayName = async (name) => {
     const user = this.auth.currentUser;
     try {
@@ -186,15 +172,14 @@ class Firebase {
   signUpWithEmailAndPassword = async (
     email,
     password,
-    name,
+    displayName,
     setAuthState,
     onError
   ) => {
     setAuthState({ status: AUTHENTICATION_LOADING });
     try {
       await createUserWithEmailAndPassword(this.auth, email, password);
-      await this.sendEmailVerification();
-      await this.updateUserDisplayName(name);
+      await this.updateUserDisplayName(displayName);
       const user = this.auth.currentUser;
     } catch (error) {
       onError && onError(error);
