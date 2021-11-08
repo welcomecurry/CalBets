@@ -5,6 +5,7 @@ import { Home } from "./components/Home";
 import { Firebase } from "./utils/firebase";
 import { AuthStateProvider } from "./components/AuthStateContext";
 import { Header } from "./components/Header";
+import { Sidebar } from "./components/Sidebar";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Header></Header>
       <AuthStateProvider Firebase={new Firebase()}>
         <Home />
+        <Sidebar />
       </AuthStateProvider>
     </div>
   );
