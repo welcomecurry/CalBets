@@ -10,7 +10,7 @@ const Home = () => {
   const { authState, signOut } = useAuthStateContext();
 
   const [odds, setOdds] = useState([]);
-  const [isSginIn, setIsSignIn] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(false);
 
   useEffect(async () => {
     const data = await fetchOdds();
@@ -23,17 +23,17 @@ const Home = () => {
     <div>
       {!userIsLoggedIn ? (
         <div>
-          {isSginIn ? (
+          {isSignIn ? (
             <div>
               <SignIn />
-              <Link onClick={() => setIsSignIn(!isSginIn)}>
+              <Link onClick={() => setIsSignIn(!isSignIn)}>
                 Don't have an account? Sign up.
               </Link>
             </div>
           ) : (
             <div>
               <SignUp />
-              <Link onClick={() => setIsSignIn(!isSginIn)}>
+              <Link onClick={() => setIsSignIn(!isSignIn)}>
                 Already have an account? Sign in.
               </Link>
             </div>
