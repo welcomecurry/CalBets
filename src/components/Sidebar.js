@@ -1,71 +1,54 @@
 import { useState, useEffect } from "react";
-import { fetchOdds } from "../services/BetsAPI";
+import Button from "@mui/material/Button";
 
-const Sidebar = () => {
-    
-    // hook for odds from API
-    const [odds, setOdds] = useState([]);
-    // get odds via API
-    useEffect(async () => {
-        const data = await fetchOdds();
-        if (data) setOdds(data);
-      }, []);
-          
-    // hook for unique list of sport titles
-    const [uniqueLeagues, getUniqueLeagues] = useState([]);
-    // get unique list of sports titles
-    useEffect(async () => {
-        var lookup = {};
-        var items = odds;
-        var result = [{league : "All"}];
+const Sidebar = (props) => {
+  const odds = props.odds;
 
-        for (var item, i = 0; item = items[i++];) {
-            var sport_title = item.sport_title;
+  // hook for unique list of sport titles
+  const [uniqueLeagues, setUniqueLeagues] = useState(["all"]);
+  // get unique list of sports titles
+  useEffect(() => {
+    const items = odds;
+    const uniqueLeaguesSet = new Set(uniqueLeagues);
 
-            if (!(sport_title in lookup)) {
-                lookup[sport_title] = 1;
-                result.push({league : sport_title});
-            }
-        }
-
-        getUniqueLeagues(result);
-    })
-
-
-    // hook for filtered display
-    const [filteredOdds, setFilteredOdds] = useState(odds);
-    // filter the "odds" data to only have the relevant sport
-    useEffect(() => {
-        const data = odds.filter(function(item){
-            var click = handleClick();
-            if (click == "All") {
-                return item;
-            }
-            return item.sport_title == click;
-        });
-
-    setFilteredOdds(data)
-    })
-
-    // this function handles clicks
-    function handleClick() {
-    
-        return(event.target.id)
+    for (const item in items) {
+      uniqueLeaguesSet.add(item.sport_title);
     }
-    
-    console.log(filteredOdds)
+    setUniqueLeagues(Array.from(uniqueLeaguesSet));
+  }, [odds]);
 
-    // return sidebar element 
-    return(
-        <div title="sidebar">
-            <div>
-                {uniqueLeagues.map(u => (
-                    <button id={u.league} onClick={handleClick}>{u.league}</button>
-                ))} 
-            </div>
-        </div>
-    );
+  // hook for filtered display
+  const [filteredOdds, setFilteredOdds] = useState(odds);
+  // filter the "odds" data to only have the relevant sport
+  // this function handles clicks
+  function handleClick(e) {
+    e.preventDefault();
+    const clicked = e.target.id;
+    if (clicked == "all") {
+      return setFilteredOdds(odds);
+    } else {
+      const filteredOdds = odds.filter(function (item) {
+        return item.sport_title == click;
+      });
 
+      setFilteredOdds(filteredOdds);
+    }
+  }
+
+  console.log(odds);
+
+  // return sidebar element
+  return (
+    <div title="sidebar">
+      <div>
+        {uniqueLeagues.map((u) => (
+          <Button id={u} key={u} onClick={handleClick}>
+            {u}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export { Sidebar };

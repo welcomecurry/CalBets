@@ -21,7 +21,7 @@ const fetchOdds = async (
     const data = await fetch(generateLink(sport, params), {
       method: "GET",
     });
-    return data ? data.json() : {};
+    return data.ok && data ? data.json() : [];
   } catch (e) {
     console.log(e);
   }

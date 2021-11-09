@@ -1,18 +1,18 @@
 import { useState } from "react";
+import Button from "@mui/material/Button";
+
 import { useAuthStateContext } from "./AuthStateContext";
 
 const SignIn = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const {
-        signInWithEmailAndPassword,
-        signInWithGoogle,
-      } = useAuthStateContext();
+  const { signInWithEmailAndPassword, signInWithGoogle } =
+    useAuthStateContext();
 
   return (
     <div>
-      <button onClick={signInWithGoogle}>Sign in with Google</button>
+      <Button onClick={signInWithGoogle}>Sign in with Google</Button>
       <form
         onSubmit={(e) => {
           signInWithEmailAndPassword(email, password);
