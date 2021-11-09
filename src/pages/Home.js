@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { useAuthStateContext } from "./AuthStateContext";
-import { AUTHENTICATED } from "../utils/firebase";
-import { SignIn } from "./SignIn";
-import { SignUp } from "./SignUp";
-import { fetchOdds } from "../services/BetsAPI";
 import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
+
+import { useAuthStateContext } from "../components/AuthStateContext";
+import { AUTHENTICATED } from "../utils/firebase";
+import { SignIn } from "../components/SignIn";
+import { SignUp } from "../components/SignUp";
+import { fetchOdds } from "../services/BetsAPI";
+import { Sidebar } from "../components/Sidebar";
 
 const Home = () => {
   const { authState, signOut } = useAuthStateContext();
@@ -18,7 +21,6 @@ const Home = () => {
   }, []);
 
   const userIsLoggedIn = authState.status === AUTHENTICATED;
-  console.log(odds);
   return (
     <div>
       {!userIsLoggedIn ? (
@@ -57,11 +59,12 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <button onClick={signOut}>
+          <Button onClick={signOut}>
             Log out {authState?.user?.displayName}
-          </button>
+          </Button>
         </div>
       )}
+    <Sidebar odds={odds}/>
     </div>
   );
 };
