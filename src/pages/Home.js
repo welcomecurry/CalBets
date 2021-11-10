@@ -8,6 +8,7 @@ import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
 import { fetchOdds } from "../services/BetsAPI";
 import { Sidebar } from "../components/Sidebar";
+import { GameCard } from "../components/GameCard/GameCard";
 
 const Home = () => {
   const { authState, signOut } = useAuthStateContext();
@@ -43,6 +44,7 @@ const Home = () => {
         </div>
       ) : (
         <div>
+          <GameCard/>
           <div>
             {odds.map((e) => (
               <div key={e.id}>

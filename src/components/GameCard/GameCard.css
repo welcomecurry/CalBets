@@ -1,0 +1,18 @@
+.container {
+    align-items: center;
+    margin: 50px 0;
+}
+
+.card {
+    margin: 0 10px !important;
+}
+
+.foot {
+    border-bottom: 10px solid rgba(131, 56, 234, 0.5);
+}
+
+@media(max-width: 770px) {
+    .card {
+        margin: 2% 0 !important;
+    }
+}
