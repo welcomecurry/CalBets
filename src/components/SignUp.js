@@ -15,7 +15,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
 
-  const { signUpWithEmailAndPassword } = useAuthStateContext();
+  const { signUpWithEmailAndPassword, signInWithGoogle } = useAuthStateContext();
   const theme = createTheme();
 
   const handleSubmit = (e) => {
@@ -41,6 +41,8 @@ const SignUp = () => {
               <Typography component="h1" variant="h5">
                 Sign up
               </Typography>
+              <Button onClick={signInWithGoogle}>Sign Up with Google</Button>
+
               <Box
                 component="form"
                 noValidate
