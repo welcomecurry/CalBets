@@ -10,10 +10,12 @@ import { Footer } from "./components/Footer";
 function App() {
   return (
     <div className="App">
+      <div style={{paddingBottom: "60px"}}>
       <Header></Header>
       <AuthStateProvider Firebase={new Firebase()}>
         <Home />
       </AuthStateProvider>
+      </div>
       <Footer></Footer>
     </div>
   );

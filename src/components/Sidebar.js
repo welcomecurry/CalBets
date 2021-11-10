@@ -28,7 +28,7 @@ const Sidebar = (props) => {
       return setFilteredOdds(odds);
     } else {
       const filteredOdds = odds.filter(function (item) {
-        return item.sport_title == click;
+        return item.sport_title == clicked;
       });
 
       setFilteredOdds(filteredOdds);
@@ -42,7 +42,7 @@ const Sidebar = (props) => {
     <div title="sidebar">
       <div>
         {uniqueLeagues.map((u) => (
-          <Button id={u} key={u} onClick={handleClick}>
+          <Button variant="contained" id={u} key={u} onClick={handleClick}>
             {u}
           </Button>
         ))}

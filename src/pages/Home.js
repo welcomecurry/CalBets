@@ -61,7 +61,7 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <Button onClick={signOut}>
+          <Button variant="contained" onClick={signOut}>
             Log out {authState?.user?.displayName}
           </Button>
         </div>

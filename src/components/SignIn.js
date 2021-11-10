@@ -43,7 +43,7 @@ const SignIn = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Button onClick={signInWithGoogle}>Sign in with Google</Button>
+          <Button variant="contained" onClick={signInWithGoogle}>Sign in with Google</Button>
 
           <Box
             component="form"
