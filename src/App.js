@@ -4,7 +4,7 @@ import "./assets/App.css";
 import { Home } from "./pages/Home";
 import { Firebase } from "./utils/firebase";
 import { AuthStateProvider } from "./components/AuthStateContext";
-import { Header } from "./components/Header";
+import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer";
 import { theme } from "./assets/theme";
 
