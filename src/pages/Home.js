@@ -44,22 +44,18 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <GameCard />
           <Sidebar odds={odds} />
           <div>
             {odds.map((e) => (
-              <div key={e.id}>
-                <div>Sport: {e.sport_title}</div>
-                <div>
-                  Odds:{" "}
-                  {e.bookmakers[0].markets[0].outcomes.map((o) => (
-                    <div>
-                      ({o.name}, {o.price})
-                    </div>
-                  ))}
-                </div>
-                <div>Time: {e.commence_time}</div>
-              </div>
+            <GameCard
+              key={e.id}
+              title={e.sport_title}
+              time={e.commence_time}
+              teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
+              teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
+              teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
+              teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
+              />
             ))}
           </div>
           <Button variant="contained" onClick={signOut}>

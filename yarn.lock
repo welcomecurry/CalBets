@@ -5346,6 +5346,7 @@ __metadata:
     "@testing-library/user-event": ^12.1.10
     firebase: ^9.2.0
     react: ^17.0.2
+    react-countup: ^6.1.0
     react-dom: ^17.0.2
     react-router-dom: ^6.0.1
     react-scripts: 4.0.3
@@ -6042,6 +6043,13 @@ __metadata:
     path-type: ^4.0.0
     yaml: ^1.10.0
   checksum: 4be63e7117955fd88333d7460e4c466a90f556df6ef34efd59034d2463484e339666c41f02b523d574a797ec61f4a91918c5b89a316db2ea2f834e0d2d09465b
+  languageName: node
+  linkType: hard
+
+"countup.js@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "countup.js@npm:2.0.8"
+  checksum: 90edbb4f62c09d25bb464ce78d96044d8c7850187029ca6cd0ff06fb21d965dd61f48745630b659f50b9892ac237e48d0677822b4c0bdea917a3af998fddb13e
   languageName: node
   linkType: hard
 
@@ -13603,6 +13611,17 @@ __metadata:
     regenerator-runtime: ^0.13.7
     whatwg-fetch: ^3.4.1
   checksum: 99e52a6b2229c7ca730cfd44ac95640f955be71d144225bd6c24fa47922a742658a371d0a2f0876d732533f1055b7cd7e9d534c89c29f8ca889ecd1b8d15f065
+  languageName: node
+  linkType: hard
+
+"react-countup@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "react-countup@npm:6.1.0"
+  dependencies:
+    countup.js: ^2.0.8
+  peerDependencies:
+    react: ">= 16.3.0"
+  checksum: ec24ac7f8b6867a7961e569d44189b9e6ceb5614be0771baa45ed3348468ccf0ad2a1388d39c9c8a537817256ebc730829294844ed7b919bbeaae8c3439dcd55
   languageName: node
   linkType: hard
 
