@@ -12,11 +12,10 @@ import Container from "@mui/material/Container";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(email, password, displayName);
+    signInWithEmailAndPassword(email, password);
   };
 
   const { signInWithEmailAndPassword, signInWithGoogle } =
@@ -48,18 +47,19 @@ const SignIn = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="displayName"
+                    autoComplete="email"
                     fullWidth
-                    id="displayName"
-                    label="Username / Email Address"
-                    onChange={(e) => setDisplayName(e.target.value)}
+                    id="email"
+                    label="Email Address"
+                    onChange={(e) => setEmail(e.target.value)}
                     required
-                    value={displayName}
+                    type="email"
+                    value={email}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="new-password"
+                    autoComplete="password"
                     fullWidth
                     id="password"
                     label="Password"

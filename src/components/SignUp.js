@@ -71,7 +71,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    autoComplete="new-password"
+                    autoComplete="password"
                     fullWidth
                     id="password"
                     label="Password"

@@ -44,7 +44,8 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <GameCard/>
+          <GameCard />
+          <Sidebar odds={odds} />
           <div>
             {odds.map((e) => (
               <div key={e.id}>
@@ -66,7 +67,6 @@ const Home = () => {
           </Button>
         </div>
       )}
-    <Sidebar odds={odds}/>
     </div>
   );
 };

@@ -13,11 +13,10 @@ function AuthStateProvider({ children, Firebase }) {
   });
 
   const signOut = () => Firebase.signOut(setAuthState);
-  const signUpWithEmailAndPassword = (email, password, name, onError) => {
+  const signUpWithEmailAndPassword = (email, password, name) => {
     const expandedOnError = (error) => {
       // If there is an error with the login we will rollback to the last auth state.
       setAuthState(authState);
-      onError && onError(error);
     };
     Firebase.signUpWithEmailAndPassword(
       email,
@@ -30,11 +29,10 @@ function AuthStateProvider({ children, Firebase }) {
     });
   };
 
-  const signInWithEmailAndPassword = (email, password, onError) => {
+  const signInWithEmailAndPassword = (email, password) => {
     const expandedOnError = (error) => {
       // If there is an error with the login we will rollback to the last auth state.
       setAuthState(authState);
-      onError && onError(error);
     };
     Firebase.signInWithEmailAndPassword(
       email,
@@ -45,8 +43,8 @@ function AuthStateProvider({ children, Firebase }) {
   };
   const signInWithGoogle = () => Firebase.signInWithGoogle(setAuthState);
   const updateEmailAddress = (email) => Firebase.updateEmailAddress(email);
-  const sendPasswordResetEmail = (email, onError) =>
-    Firebase.sendPasswordResetEmail(email, onError);
+  const sendPasswordResetEmail = (email) =>
+    Firebase.sendPasswordResetEmail(email);
   const sendEmailVerification = (onError) =>
     Firebase.sendEmailVerification(onError);
   const userHasOnlyEmailProvider = () => Firebase.userHasOnlyEmailProvider();
