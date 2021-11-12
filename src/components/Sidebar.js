@@ -11,7 +11,7 @@ const Sidebar = (props) => {
     const items = odds;
     const uniqueLeaguesSet = new Set(uniqueLeagues);
 
-    for (const item in items) {
+    for (const item of items) {
       uniqueLeaguesSet.add(item.sport_title);
     }
     setUniqueLeagues(Array.from(uniqueLeaguesSet));
@@ -27,15 +27,13 @@ const Sidebar = (props) => {
     if (clicked == "all") {
       return setFilteredOdds(odds);
     } else {
-      const filteredOdds = odds.filter(function (item) {
+      const filtered = odds.filter(function (item) {
         return item.sport_title == clicked;
       });
 
-      setFilteredOdds(filteredOdds);
+      setFilteredOdds(filtered);
     }
   }
-
-  console.log(odds);
 
   // return sidebar element
   return (
