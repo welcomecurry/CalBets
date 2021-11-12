@@ -14,6 +14,7 @@ import { fetchOdds } from "../services/BetsAPI";
 import { Sidebar } from "../components/Sidebar";
 import { GameCard } from "../components/GameCard/GameCard";
 import { Balance } from "../components/Balance/Balance";
+import { fetchLiveResults } from "../services/LiveResultsAPI";
 
 const Home = () => {
   const { authState, signOut } = useAuthStateContext();
@@ -24,8 +25,12 @@ const Home = () => {
 
   useEffect(async () => {
     if (authState.status === AUTHENTICATED && sport !== "") {
-      const data = await fetchOdds(sport);
-      if (data) setOdds(data);
+      const oddsData = await fetchOdds(sport);
+      const liveResultsData = await fetchLiveResults("soccer");
+
+      // TODO: show live results
+      console.log(liveResultsData);
+      if (oddsData) setOdds(oddsData);
       setSelectedLeague("all")
     }
   }, [sport]);
