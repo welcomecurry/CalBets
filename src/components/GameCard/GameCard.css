@@ -11,6 +11,12 @@
     border-bottom: 10px solid rgba(131, 56, 234, 0.5);
 }
 
+.teamBadge {
+    display: flex;
+    width: 20%;
+    height: 20%;
+}
+
 @media(max-width: 770px) {
     .card {
         margin: 2% 0 !important;
