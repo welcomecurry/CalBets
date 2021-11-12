@@ -28,8 +28,8 @@ const GameCard = (props) => {
                         <Typography variant="body2" gutterBottom>{props.title}</Typography>
                         <Typography variant="body2">
                         </Typography>
-                        <img className="teamBadge" src={teamOneImage}></img><Typography color="textSecondary">{props.teamOneName + " "} <CountUp start={0.0} end={props.teamOneOdds} duration={0.5} separator="," decimals="2"/> </Typography>
-                        <img className="teamBadge" src={teamTwoImage}></img><Typography color="textSecondary">{props.teamTwoName + " "} <CountUp start={0.0} end={props.teamTwoOdds} duration={0.5} separator="," decimals="2"/> </Typography>
+                        <div className="te"><img className="teamBadge" src={teamOneImage}></img><Typography color="textSecondary">{props.teamOneName + " "} <CountUp start={0.0} end={props.teamOneOdds} duration={0.5} separator="," decimals="2"/> </Typography></div>
+                        <div className="te"><img className="teamBadge" src={teamTwoImage}></img><Typography color="textSecondary">{props.teamTwoName + " "} <CountUp start={0.0} end={props.teamTwoOdds} duration={0.5} separator="," decimals="2"/> </Typography></div>
                         <Typography variant="body2">{props.time}</Typography>
 
                     </CardContent>
