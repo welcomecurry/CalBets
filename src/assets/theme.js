@@ -1,9 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
-  status: {
-    danger: "#e53e3e",
-  },
   palette: {
     primary: {
       light: '#757ce8',
@@ -12,6 +9,12 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     secondary: {
+      light: '#81c784',
+      main: '#66bb6a',
+      dark: '#388e3c',
+      contrastText: '#000',
+    },
+    danger: {
       light: '#ff7961',
       main: '#f44336',
       dark: '#ba000d',

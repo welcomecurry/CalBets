@@ -40,7 +40,13 @@ const Sidebar = (props) => {
     <div title="sidebar">
       <div>
         {uniqueLeagues.map((u) => (
-          <Button variant="contained" id={u} key={u} onClick={handleClick}>
+          <Button
+            sx={{ m: 0.5, backgroundColor: "secondary.light" }}
+            variant="contained"
+            id={u}
+            key={u}
+            onClick={handleClick}
+          >
             {u}
           </Button>
         ))}
