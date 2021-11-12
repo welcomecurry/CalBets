@@ -5,11 +5,11 @@ const Sidebar = (props) => {
   const odds = props.odds;
 
   // hook for unique list of sport titles
-  const [uniqueLeagues, setUniqueLeagues] = useState(["all"]);
+  const [uniqueLeagues, setUniqueLeagues] = useState([]);
   // get unique list of sports titles
   useEffect(() => {
     const items = odds;
-    const uniqueLeaguesSet = new Set(uniqueLeagues);
+    const uniqueLeaguesSet = new Set(["all"]);
 
     for (const item of items) {
       uniqueLeaguesSet.add(item.sport_title);

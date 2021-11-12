@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
 
 import { useAuthStateContext } from "../components/AuthStateContext";
 import { AUTHENTICATED } from "../utils/firebase";
@@ -13,14 +17,14 @@ import { Balance } from "../components/Balance/Balance";
 
 const Home = () => {
   const { authState, signOut } = useAuthStateContext();
-
+  const [sport, setSport] = useState("upcoming");
   const [odds, setOdds] = useState([]);
   const [isSignIn, setIsSignIn] = useState(false);
 
   useEffect(async () => {
-    const data = await fetchOdds();
+    const data = await fetchOdds(sport);
     if (data) setOdds(data);
-  }, []);
+  }, [sport]);
 
   const userIsLoggedIn = authState.status === AUTHENTICATED;
   return (
@@ -46,6 +50,21 @@ const Home = () => {
       ) : (
         <div>
           <Balance></Balance>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl>
+              <Select
+                sx={{ m: 1 }}
+                id="sport-selector"
+                value={sport}
+                onChange={(e) => setSport(e.target.value)}
+              >
+                <MenuItem value={"upcoming"}>Upcoming Events</MenuItem>
+                <MenuItem value={"americanfootball"}>Football</MenuItem>
+                <MenuItem value={"basketball"}>Basketball</MenuItem>
+                <MenuItem value={"soccer"}>Soccer</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           <Sidebar odds={odds} />
           <div>
             {odds.map((e) => (

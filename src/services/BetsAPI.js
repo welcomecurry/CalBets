@@ -15,7 +15,7 @@ const generateLink = (sport, params) => {
 };
 
 const fetchOdds = async (
-  sport = "upcoming",
+  sport,
   params = { regions: "us", markets: "h2h" }
 ) => {
   try {
