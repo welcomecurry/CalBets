@@ -55,7 +55,15 @@ const GameCard = (props) => {
                 />{" "}
               </Typography>
             </div>
-            <Typography variant="body2">{new Date(props.time).toLocaleString()}</Typography>
+            <Typography variant="body2">
+              {new Date(props.time).toLocaleString([], {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Typography>
           </CardContent>
         </Grid>
       </Grid>

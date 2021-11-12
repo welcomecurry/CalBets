@@ -17,19 +17,34 @@ import { Balance } from "../components/Balance/Balance";
 
 const Home = () => {
   const { authState, signOut } = useAuthStateContext();
-  const [sport, setSport] = useState("upcoming");
-  const [odds, setOdds] = useState([]);
   const [isSignIn, setIsSignIn] = useState(false);
+  const [odds, setOdds] = useState([]);
+  const [sport, setSport] = useState("");
+  const [selectedLeague, setSelectedLeague] = useState("");
 
   useEffect(async () => {
-    const data = await fetchOdds(sport);
-    if (data) setOdds(data);
+    if (authState.status === AUTHENTICATED && sport !== "") {
+      const data = await fetchOdds(sport);
+      if (data) setOdds(data);
+      setSelectedLeague("all")
+    }
   }, [sport]);
 
-  const userIsLoggedIn = authState.status === AUTHENTICATED;
+  useEffect(() => {
+    if (authState.status === AUTHENTICATED) {
+      if (sport === "") setSport("upcoming");
+      if (selectedLeague === "") setSelectedLeague("all");
+    } else {
+      // reset state if user not logged in
+      setSport("");
+      setOdds([]);
+      setSelectedLeague("");
+    }
+  }, [authState.status  === AUTHENTICATED]);
+
   return (
     <div>
-      {!userIsLoggedIn ? (
+      {!(authState.status === AUTHENTICATED) ? (
         <div>
           {isSignIn ? (
             <div>
@@ -65,19 +80,28 @@ const Home = () => {
               </Select>
             </FormControl>
           </Box>
-          <Sidebar odds={odds} />
+          <Sidebar
+            selectedLeague={selectedLeague}
+            setSelectedLeague={setSelectedLeague}
+            odds={odds}
+          />
           <div>
-            {odds.map((e) => (
-              <GameCard
-                key={e.id}
-                title={e.sport_title}
-                time={e.commence_time}
-                teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
-                teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
-                teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
-                teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
-              />
-            ))}
+            {odds
+              .filter(
+                (e) =>
+                  selectedLeague === "all" || e.sport_title === selectedLeague
+              )
+              .map((e) => (
+                <GameCard
+                  key={e.id}
+                  title={e.sport_title}
+                  time={e.commence_time}
+                  teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
+                  teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
+                  teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
+                  teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
+                />
+              ))}
           </div>
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}

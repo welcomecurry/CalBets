@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 
 const Sidebar = (props) => {
-  const odds = props.odds;
+  const { odds, selectedLeague, setSelectedLeague } = props;
 
   // hook for unique list of sport titles
   const [uniqueLeagues, setUniqueLeagues] = useState([]);
@@ -17,22 +17,9 @@ const Sidebar = (props) => {
     setUniqueLeagues(Array.from(uniqueLeaguesSet));
   }, [odds]);
 
-  // hook for filtered display
-  const [filteredOdds, setFilteredOdds] = useState(odds);
-  // filter the "odds" data to only have the relevant sport
-  // this function handles clicks
   function handleClick(e) {
     e.preventDefault();
-    const clicked = e.target.id;
-    if (clicked == "all") {
-      return setFilteredOdds(odds);
-    } else {
-      const filtered = odds.filter(function (item) {
-        return item.sport_title == clicked;
-      });
-
-      setFilteredOdds(filtered);
-    }
+    setSelectedLeague(e.target.id);
   }
 
   // return sidebar element
@@ -41,7 +28,11 @@ const Sidebar = (props) => {
       <div>
         {uniqueLeagues.map((u) => (
           <Button
-            sx={{ m: 0.5, backgroundColor: "secondary.light" }}
+            sx={{
+              m: 0.5,
+              backgroundColor:
+                u === selectedLeague ? "secondary.dark" : "secondary.light",
+            }}
             variant="contained"
             id={u}
             key={u}
