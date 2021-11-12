@@ -33,26 +33,30 @@ const GameCard = (props) => {
               <img className="teamBadge" src={teamOneImage}></img>
               <Typography color="textSecondary">
                 {props.teamOneName + " "}{" "}
-                <CountUp
-                  start={0.0}
-                  end={props.teamOneOdds}
-                  duration={0.5}
-                  separator=","
-                  decimals="2"
-                />{" "}
+              <button>
+                  <CountUp
+                    start={0.0}
+                    end={props.teamOneOdds}
+                    duration={0.5}
+                    separator=","
+                    decimals="2"
+                  />{" "}
+                </button>
               </Typography>
             </div>
             <div className="te">
               <img className="teamBadge" src={teamTwoImage}></img>
               <Typography color="textSecondary">
                 {props.teamTwoName + " "}{" "}
-                <CountUp
-                  start={0.0}
-                  end={props.teamTwoOdds}
-                  duration={0.5}
-                  separator=","
-                  decimals="2"
-                />{" "}
+                <button>
+                  <CountUp
+                    start={0.0}
+                    end={props.teamTwoOdds}
+                    duration={0.5}
+                    separator=","
+                    decimals="2"
+                  />{" "}
+                </button>
               </Typography>
             </div>
             <Typography variant="body2">
