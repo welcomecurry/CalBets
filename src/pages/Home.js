@@ -12,7 +12,7 @@ import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
 import { fetchOdds } from "../services/BetsAPI";
 import { Sidebar } from "../components/Sidebar";
-import { GameCard } from "../components/GameCard/GameCard";
+import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
 import { fetchLiveResults } from "../services/LiveResultsAPI";
 
@@ -31,7 +31,7 @@ const Home = () => {
       // TODO: show live results
       console.log(liveResultsData);
       if (oddsData) setOdds(oddsData);
-      setSelectedLeague("all")
+      setSelectedLeague("all");
     }
   }, [sport]);
 
@@ -45,7 +45,7 @@ const Home = () => {
       setOdds([]);
       setSelectedLeague("");
     }
-  }, [authState.status  === AUTHENTICATED]);
+  }, [authState.status === AUTHENTICATED]);
 
   return (
     <div>
@@ -90,24 +90,7 @@ const Home = () => {
             setSelectedLeague={setSelectedLeague}
             odds={odds}
           />
-          <div>
-            {odds
-              .filter(
-                (e) =>
-                  selectedLeague === "all" || e.sport_title === selectedLeague
-              )
-              .map((e) => (
-                <GameCard
-                  key={e.id}
-                  title={e.sport_title}
-                  time={e.commence_time}
-                  teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
-                  teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
-                  teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
-                  teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
-                />
-              ))}
-          </div>
+          <GameCardList odds={odds} selectedLeague={selectedLeague} />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}
             variant="contained"
