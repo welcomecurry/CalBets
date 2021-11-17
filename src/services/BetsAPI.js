@@ -2,7 +2,8 @@ const CORS_URL = "https://cors-anywhere.herokuapp.com/";
 
 // OddsAPI
 //Xavi's Key 06165585a2b227eef55bc7ab4fc056a3
-const ODDS_API_KEY = "4766c767e8fd0fc9d14849e3ad1aac29";
+//Amit's Key 4766c767e8fd0fc9d14849e3ad1aac29
+const ODDS_API_KEY = "4740754f9d2b0542ac89e94e1368fc0f"; 
 const ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/";
 
 const generateLink = (sport, params) => {
