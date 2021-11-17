@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
+import LinearProgress from '@mui/material/LinearProgress';
 import CountUp from "react-countup";
+import { BetButton } from "../BetButton/BetButton"
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 import "./GameCard.css";
@@ -11,6 +13,7 @@ const GameCard = (props) => {
   // }
   const [teamOneImage, setTeamOneImage] = useState(CalBetsLogo);
   const [teamTwoImage, setTeamTwoImage] = useState(CalBetsLogo);
+  const [isLive, setIsLive] = useState(props.isLive);
 
   useEffect(async () => {
     const image1 = await fetchTeamImage(props.teamOneName);
@@ -23,7 +26,7 @@ const GameCard = (props) => {
   return (
     <div className="container">
       <Grid container spacing={4} justifyContent="center">
-        <Grid item component={Card} xs={12} md={2} className="card foot">
+        <Grid item component={Card} xs={12} md={2} className={isLive ? "card" : "card foot"}>
           <CardContent>
             <Typography variant="body2" gutterBottom>
               {props.title}
@@ -33,30 +36,19 @@ const GameCard = (props) => {
               <img className="teamBadge" src={teamOneImage}></img>
               <Typography color="textSecondary">
                 {props.teamOneName + " "}{" "}
-              <button>
-                  <CountUp
-                    start={0.0}
-                    end={props.teamOneOdds}
-                    duration={0.5}
-                    separator=","
-                    decimals="2"
-                  />{" "}
-                </button>
+
               </Typography>
+              <BetButton
+                odds={props.teamOneOdds}
+              />
             </div>
             <div className="te">
               <img className="teamBadge" src={teamTwoImage}></img>
               <Typography color="textSecondary">
                 {props.teamTwoName + " "}{" "}
-                <button>
-                  <CountUp
-                    start={0.0}
-                    end={props.teamTwoOdds}
-                    duration={0.5}
-                    separator=","
-                    decimals="2"
-                  />{" "}
-                </button>
+              <BetButton
+                odds={props.teamTwoOdds}
+              />
               </Typography>
             </div>
             <Typography variant="body2">
@@ -69,6 +61,17 @@ const GameCard = (props) => {
               })}
             </Typography>
           </CardContent>
+          {isLive ? (
+            <div className="t">
+          <LinearProgress 
+          sx={{
+          width: 300,
+          height: 8,
+          borderRadius: 1,
+          right: 18,
+          top: 16,
+        }} color="primary" />
+        </div>) : (null)}
         </Grid>
       </Grid>
     </div>

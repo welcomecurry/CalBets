@@ -1,0 +1,10 @@
+.button {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.s {
+    color: #E7B132;
+    background-color: rgba(0, 50, 98, 0.74);
+}

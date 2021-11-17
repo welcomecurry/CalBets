@@ -26,8 +26,8 @@ const GameCardList = (props) => {
   return (
     <div>
       <Box sx={{ border: "1px dashed grey" }}>
-        {"Upcoming"}
-        {upcomingOdds
+        {"Ongoing"}
+        {startedOdds
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
           )
@@ -40,12 +40,13 @@ const GameCardList = (props) => {
               teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
               teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
               teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
+              isLive={true}
             />
           ))}
       </Box>
       <Box sx={{ border: "1px dashed grey" }}>
-        {"Already started"}
-        {startedOdds
+        {"Upcoming"}
+        {upcomingOdds
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
           )
