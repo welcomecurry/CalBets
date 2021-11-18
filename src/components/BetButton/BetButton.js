@@ -55,7 +55,6 @@ const StyledMenu = styled((props) => (
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
-      event.stopPropagation();
     };
     const handleClose = () => {
       setAnchorEl(null);
@@ -85,10 +84,10 @@ const StyledMenu = styled((props) => (
         >
           <MenuItem onClick={handleClose} disableRipple>
             <ArrowDownward />
-            {props.team}
+            {props.team + " " + props.odds}
           </MenuItem>
           <MenuItem onClick={handleClose} disableRipple>
-          <TextField id="outlined-basic" label="Bet Amount" variant="outlined" />
+            <TextField id="outlined-basic" label="Bet Amount" variant="outlined" />
           </MenuItem>
         </StyledMenu>
       </div>
