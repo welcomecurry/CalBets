@@ -3,7 +3,6 @@ import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 import LinearProgress from '@mui/material/LinearProgress';
 import CountUp from "react-countup";
 import { BetButton } from "../BetButton/BetButton"
-import { BetCard} from "../BetCard/BetCard"
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 import "./GameCard.css";
@@ -15,7 +14,6 @@ const GameCard = (props) => {
   const [teamOneImage, setTeamOneImage] = useState(CalBetsLogo);
   const [teamTwoImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const [placingBet, setPlacingBet] = useState(false);
 
   useEffect(async () => {
     const image1 = await fetchTeamImage(props.teamOneName);
@@ -23,14 +21,7 @@ const GameCard = (props) => {
 
     if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
     if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
-    console.log(placingBet)
   }, []);
-
-  const test = () => {
-    setPlacingBet(true)
-    console.log(placingBet)
-
-  }
 
   return (
     <div className="container">
@@ -47,16 +38,10 @@ const GameCard = (props) => {
                 {props.teamOneName + " "}{" "}
 
               </Typography>
-              {/* <BetButton
+              <BetButton
                 odds={props.teamOneOdds}
-                onClick={() => console.log("working")}
-              /> */}
-              <button
-                onClick={() => setPlacingBet(true)}
-              >
-              {props.teamOneOdds}
-              </button>
-              {placingBet ? (<BetCard></BetCard>) : (null)}
+                team={props.teamTwoName}
+              />
             </div>
             <div className="te">
               <img className="teamBadge" src={teamTwoImage}></img>
@@ -64,6 +49,7 @@ const GameCard = (props) => {
                 {props.teamTwoName + " "}{" "}
               <BetButton
                 odds={props.teamTwoOdds}
+                team={props.teamTwoName}
               />
               </Typography>
             </div>
