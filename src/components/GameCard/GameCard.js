@@ -40,7 +40,7 @@ const GameCard = (props) => {
               </Typography>
               <BetButton
                 odds={props.teamOneOdds}
-                team={props.teamTwoName}
+                team={props.teamOneName}
               />
             </div>
             <div className="te">
