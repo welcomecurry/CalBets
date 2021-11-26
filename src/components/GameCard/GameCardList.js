@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { GameCard } from "./GameCard";
 import { partition } from "lodash";
 import { Box } from "@material-ui/core";
+import CircularProgress from '@mui/material/CircularProgress';
 import "./GameCard.css";
 
 
@@ -28,7 +29,7 @@ const GameCardList = (props) => {
   return (
     <div>
       <Box sx={{ border: "1px dashed grey" }}>
-        {"Ongoing"}
+        {startedOdds.length === 0 ? <CircularProgress/> : "Ongoing"}
         {startedOdds
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
@@ -47,7 +48,7 @@ const GameCardList = (props) => {
           ))}
       </Box>
       <Box sx={{ border: "1px dashed grey" }}>
-        {"Upcoming"}
+      {startedOdds.length === 0 ? <CircularProgress/> : "Upcoming"}
         {upcomingOdds
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
