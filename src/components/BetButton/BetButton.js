@@ -82,13 +82,25 @@ const StyledMenu = styled((props) => (
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose} disableRipple>
+          <MenuItem>
             <ArrowDownward />
             {props.team + " " + props.odds}
           </MenuItem>
-          <MenuItem onClick={handleClose} disableRipple>
-            <TextField id="outlined-basic" label="Bet Amount" variant="outlined" />
-          </MenuItem>
+          <div className="field">
+            <MenuItem  disableRipple>
+              <TextField id="outlined-basic" label="Bet Amount" variant="outlined" />
+              <Button
+                id="demo-customized-button"
+                aria-controls="demo-customized-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                variant="contained"
+                disableElevation
+                >
+                Bet
+              </Button>
+            </MenuItem>
+          </div>
         </StyledMenu>
       </div>
     );

@@ -8,3 +8,8 @@
     color: #E7B132;
     background-color: rgba(0, 50, 98, 0.74);
 }
+
+.field {
+    display: flex;
+    margin-left: 30px;
+}
