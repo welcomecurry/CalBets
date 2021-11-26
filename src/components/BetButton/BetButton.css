@@ -8,11 +8,3 @@
     color: #E7B132;
     background-color: rgba(0, 50, 98, 0.74);
 }
-
-.oddss {
-    color: #E7B132;
-}
-
-&.Mui-selected: { 
-    color: #ffffff; 
-}

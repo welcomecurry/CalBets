@@ -1,4 +1,4 @@
-const TEAMS_API_URL = "https://www.thesportsdb.com/api/v1/json/1/searchteams.php?t=";
+const TEAMS_API_URL = "https://www.thesportsdb.com/api/v1/json/2/searchteams.php?t=";
 
 const generateLink = (team) => {
   var url = TEAMS_API_URL + `${team}`;

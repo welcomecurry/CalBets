@@ -36,10 +36,10 @@ const GameCardList = (props) => {
               key={e.id}
               title={e.sport_title}
               time={e.commence_time}
-              teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
-              teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
-              teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
-              teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
+              teamOneName={e.bookmakers[0].markets[0].outcomes[0].name === undefined ? null : e.bookmakers[0].markets[0].outcomes[0].name}
+              teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price === undefined ? null : e.bookmakers[0].markets[0].outcomes[0].price}
+              teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name === undefined ? null : e.bookmakers[0].markets[0].outcomes[1].name}
+              teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price === undefined ? null : e.bookmakers[0].markets[0].outcomes[1].price}
               isLive={true}
             />
           ))}
