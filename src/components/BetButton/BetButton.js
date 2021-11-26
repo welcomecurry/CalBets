@@ -82,8 +82,8 @@ const StyledMenu = styled((props) => (
           open={open}
           onClose={handleClose}
         >
-          <MenuItem>
-            <ArrowDownward />
+          <MenuItem sx={{ width: "25rem" }}>
+          <img className="teamBadge" src={props.image}></img>
             {props.team + " " + props.odds}
           </MenuItem>
           <div className="field">
