@@ -55,7 +55,12 @@ const GameCard = (props) => {
               />
               </Typography>
             </div>
-            <Typography variant="body2">
+            {isLive ? (
+              <Typography variant="body2">
+              In Progress
+              </Typography>
+            ) : (
+              <Typography variant="body2">
               {new Date(props.time).toLocaleString([], {
                 year: "numeric",
                 month: "numeric",
@@ -64,6 +69,7 @@ const GameCard = (props) => {
                 minute: "2-digit",
               })}
             </Typography>
+            )}
           </CardContent>
           {isLive ? (
             <div className="t">

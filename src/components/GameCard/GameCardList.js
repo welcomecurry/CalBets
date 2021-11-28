@@ -13,8 +13,8 @@ const isUpcoming = (timeStart) => {
 };
 
 const GameCardList = (props) => {
-  const { selectedLeague, odds } = props;
-
+  const { selectedLeague, odds , liveResults} = props;
+  console.log(odds);
   const [upcomingOdds, setUpcomingOdds] = useState([]);
   const [startedOdds, setStartedOdds] = useState([]);
 
