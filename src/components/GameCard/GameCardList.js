@@ -56,14 +56,18 @@ const GameCardList = (props) => {
           )
           .map((e) => {
             const { outcomes } = e.bookmakers[0].markets[0];
-            <GameCard
-              key={e.id}
-              title={e.sport_title}
-              time={e.commence_time}
-              teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
-              teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
-              isLive={false}
-            />;
+            return (
+              <GameCard
+                db={db}
+                gameId={e.id}
+                leagueName={e.sport_title}
+                gameStartTime={e.commence_time}
+                teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
+                teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
+                isLive={false}
+                userId={userId}
+              />
+            );
           })}
       </Box>
     </div>
