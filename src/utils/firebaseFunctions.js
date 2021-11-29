@@ -1,5 +1,7 @@
 import { collection, setDoc, doc, getDoc, getDocs} from "firebase/firestore";
+
 const DEFAULT_BALANCE = 500;
+
 const fetchUserBets = async (db, userId) => {
   const betsRef = collection(db, "users", userId, "bets");
   const querySnapshot = await getDocs(betsRef);
@@ -42,6 +44,15 @@ const setGame = async (db, game) => {
   await setDoc(doc(gamesRef, game.id), game);
 };
 
+const fetchGame = async (db, gameId) => {
+  const gameDoc = doc(db, "games", gameId);
+
+  const docSnap = await getDoc(gameDoc);
+  if (docSnap.exists()) {
+    return docSnap.data();
+  };
+};
+
 const setUserBet = async (db, userId, gameId, odds, value) => {
   // Add bet to user
   const betsRef = collection(db, "users", userId, "bets");
@@ -54,6 +65,7 @@ const setUserBet = async (db, userId, gameId, odds, value) => {
 export {
   fetchUserBets,
   fetchUserData,
+  fetchGame,
   setGame,
   createUserData,
   setUserBet,

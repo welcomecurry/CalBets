@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { AUTHENTICATED, UNAUTHENTICATED } from "../utils/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
+import { fetchUserBets, fetchGame } from "../utils/firebaseFunctions";
 
 const AuthStateContext = createContext({
   state: UNAUTHENTICATED,
@@ -60,6 +61,13 @@ function AuthStateProvider({ children, Firebase }) {
       const unsub = onSnapshot(userDoc, (doc) => {
         setUserData(doc.data());
       });
+
+      const userBets = await fetchUserBets(Firebase.firestore, authState.user.uid);
+      Object.entries(userBets).forEach(async ([gameId, bet]) => {
+        const gameDetails = await fetchGame(Firebase.firestore, gameId);
+        userBets[gameId] = { ...gameDetails, ...bet };
+      });
+      setUserData({...userData, bets: userBets});
 
       return () => unsub();
     }

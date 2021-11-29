@@ -15,6 +15,7 @@ import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
 import { fetchLiveResults } from "../services/LiveResultsAPI";
+import { User } from "./User";
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
@@ -27,10 +28,10 @@ const Home = () => {
   useEffect(async () => {
     if (authState.status === AUTHENTICATED && sport !== "") {
       const oddsData = await fetchOdds(sport);
-      const liveResultsData = await fetchLiveResults("soccer");
-      if (liveResultsData) setLiveResults(liveResultsData);
+      // const liveResultsData = await fetchLiveResults("soccer");
+      // if (liveResultsData) setLiveResults(liveResultsData);
       // TODO: show live results
-      console.log(liveResultsData);
+      // console.log(liveResultsData);
       if (oddsData) setOdds(oddsData);
       setSelectedLeague("all");
     }
@@ -70,6 +71,8 @@ const Home = () => {
         </div>
       ) : (
         <div>
+          {/* TODO: create separate User page */}
+          <User />
           <Balance value={userData.balance} />
           <Box sx={{ minWidth: 120 }}>
             <FormControl>
