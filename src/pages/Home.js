@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
@@ -14,8 +15,7 @@ import { fetchOdds } from "../services/BetsAPI";
 import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
-import { fetchLiveResults } from "../services/LiveResultsAPI";
-import { User } from "./User";
+// import { fetchLiveResults } from "../services/LiveResultsAPI";
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
@@ -23,7 +23,7 @@ const Home = () => {
   const [odds, setOdds] = useState([]);
   const [sport, setSport] = useState("");
   const [selectedLeague, setSelectedLeague] = useState("");
-  const [liveResults, setLiveResults] = useState([]);
+  // const [liveResults, setLiveResults] = useState([]);
 
   useEffect(async () => {
     if (authState.status === AUTHENTICATED && sport !== "") {
@@ -71,8 +71,9 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          {/* TODO: create separate User page */}
-          <User />
+          <nav>
+            <RouterLink to="/user">My Bets</RouterLink>
+          </nav>
           <Balance value={userData.balance} />
           <Box sx={{ minWidth: 120 }}>
             <FormControl>
@@ -99,7 +100,7 @@ const Home = () => {
             userId={authState.user.uid}
             odds={odds}
             selectedLeague={selectedLeague}
-            liveResults={liveResults}
+            // liveResults={liveResults}
           />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}

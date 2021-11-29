@@ -14,6 +14,7 @@ function AuthStateProvider({ children, Firebase }) {
     user: undefined,
   });
   const [userData, setUserData] = useState({});
+  const [userBets, setUserBets] = useState({});
 
   const signOut = () => Firebase.signOut(setAuthState);
   const signUpWithEmailAndPassword = (email, password, name) => {
@@ -63,15 +64,16 @@ function AuthStateProvider({ children, Firebase }) {
       });
 
       const userBets = await fetchUserBets(Firebase.firestore, authState.user.uid);
-      Object.entries(userBets).forEach(async ([gameId, bet]) => {
-        const gameDetails = await fetchGame(Firebase.firestore, gameId);
-        userBets[gameId] = { ...gameDetails, ...bet };
-      });
-      setUserData({...userData, bets: userBets});
+      for (const gameId in userBets) {
+        const bet = userBets[gameId];
+        const game = await fetchGame(Firebase.firestore, gameId);
+        userBets[gameId] = { ...game, ...bet };
+      };
+      setUserBets(userBets);
 
       return () => unsub();
     }
-  }, [authState.user]);
+  }, [authState.status === AUTHENTICATED]);
 
   return (
     <AuthStateContext.Provider
@@ -79,6 +81,7 @@ function AuthStateProvider({ children, Firebase }) {
         authState,
         db: Firebase.firestore,
         userData,
+        userBets,
         signOut,
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,
