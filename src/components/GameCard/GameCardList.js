@@ -12,8 +12,7 @@ const isUpcoming = (timeStart) => {
 };
 
 const GameCardList = (props) => {
-  const { selectedLeague, odds, liveResults } = props;
-  console.log(odds);
+  const { db, selectedLeague, odds, userId } = props;
   const [upcomingOdds, setUpcomingOdds] = useState([]);
   const [startedOdds, setStartedOdds] = useState([]);
 
@@ -33,34 +32,21 @@ const GameCardList = (props) => {
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
           )
-          .map((e) => (
-            <GameCard
-              key={e.id}
-              title={e.sport_title}
-              time={e.commence_time}
-              teamOneName={
-                e.bookmakers[0].markets[0].outcomes[0].name === undefined
-                  ? null
-                  : e.bookmakers[0].markets[0].outcomes[0].name
-              }
-              teamOneOdds={
-                e.bookmakers[0].markets[0].outcomes[0].price === undefined
-                  ? null
-                  : e.bookmakers[0].markets[0].outcomes[0].price
-              }
-              teamTwoName={
-                e.bookmakers[0].markets[0].outcomes[1].name === undefined
-                  ? null
-                  : e.bookmakers[0].markets[0].outcomes[1].name
-              }
-              teamTwoOdds={
-                e.bookmakers[0].markets[0].outcomes[1].price === undefined
-                  ? null
-                  : e.bookmakers[0].markets[0].outcomes[1].price
-              }
-              isLive={true}
-            />
-          ))}
+          .map((e) => {
+            const { outcomes } = e.bookmakers[0].markets[0];
+            return (
+              <GameCard
+                db={db}
+                gameId={e.id}
+                leagueName={e.sport_title}
+                gameStartTime={e.commence_time}
+                teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
+                teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
+                isLive={true}
+                userId={userId}
+              />
+            );
+          })}
       </Box>
       <Box sx={{ border: "1px dashed grey" }}>
         {upcomingOdds.length === 0 ? <CircularProgress /> : "Upcoming"}
@@ -68,18 +54,17 @@ const GameCardList = (props) => {
           .filter(
             (e) => selectedLeague === "all" || e.sport_title === selectedLeague
           )
-          .map((e) => (
+          .map((e) => {
+            const { outcomes } = e.bookmakers[0].markets[0];
             <GameCard
               key={e.id}
               title={e.sport_title}
               time={e.commence_time}
-              teamOneName={e.bookmakers[0].markets[0].outcomes[0].name}
-              teamOneOdds={e.bookmakers[0].markets[0].outcomes[0].price}
-              teamTwoName={e.bookmakers[0].markets[0].outcomes[1].name}
-              teamTwoOdds={e.bookmakers[0].markets[0].outcomes[1].price}
+              teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
+              teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
               isLive={false}
-            />
-          ))}
+            />;
+          })}
       </Box>
     </div>
   );

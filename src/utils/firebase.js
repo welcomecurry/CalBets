@@ -16,6 +16,7 @@ import {
   updateEmail,
   updateProfile,
 } from "firebase/auth";
+import { createUserData, fetchUserData } from "./firebaseFunctions";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -40,7 +41,7 @@ const supportedPopupSignInMethods = [
 ];
 
 class Firebase {
-  constructor(firebaseKeys) {
+  constructor() {
     // Do not initialize the app if this step was already done.
     if (!getApps().length) {
       const app = initializeApp(FIREBASE_CONFIG);
@@ -48,6 +49,7 @@ class Firebase {
     }
 
     if (getApps().length) {
+      this.firestore = getFirestore();
       this.auth = getAuth();
       this.googleLoginProvider = new GoogleAuthProvider();
       this.emailAuthProvider = new EmailAuthProvider();
@@ -83,6 +85,10 @@ class Firebase {
       setAuthState({ status: AUTHENTICATION_LOADING });
       await signInWithPopup(this.auth, this.googleLoginProvider);
       const user = this.auth.currentUser;
+      const userData = await fetchUserData(this.firestore, user.uid)
+      if (!userData) {
+        await createUserData(this.firestore, user.uid);
+      }
     } catch (error) {
       setAuthState({ status: UNAUTHENTICATED, error });
       console.log("signInWithGoogle failed: ", error);
@@ -148,11 +154,10 @@ class Firebase {
     }
   };
 
-  sendPasswordResetEmail = async (email, onError) => {
+  sendPasswordResetEmail = async (email) => {
     try {
       await sendPasswordResetEmail(this.auth, email);
     } catch (error) {
-      onError && onError(error);
       console.log("sendPasswordResetEmail failed: ", error);
     }
   };
@@ -174,15 +179,14 @@ class Firebase {
     password,
     displayName,
     setAuthState,
-    onError
   ) => {
     setAuthState({ status: AUTHENTICATION_LOADING });
     try {
       await createUserWithEmailAndPassword(this.auth, email, password);
       await this.updateUserDisplayName(displayName);
       const user = this.auth.currentUser;
+      await createUserData(this.firestore, user.uid)
     } catch (error) {
-      onError && onError(error);
       console.log("signUpWithEmailAndPassword failed: ", error);
     }
   };
@@ -191,7 +195,6 @@ class Firebase {
     email,
     password,
     setAuthState,
-    onError
   ) => {
     try {
       setAuthState({ status: AUTHENTICATION_LOADING });
@@ -201,11 +204,8 @@ class Firebase {
       if (error.code === "auth/account-exists-with-different-credential") {
         throw new Error("Email already used for authentication.");
       } else {
-        if (!onError) {
-          throw new Error("signInWithEmailAndPassword failed: ", error);
-        } else {
-          onError(error);
-        }
+        throw new Error("signInWithEmailAndPassword failed: ", error);
+
       }
     }
   };

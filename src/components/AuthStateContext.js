@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { UNAUTHENTICATED } from "../utils/firebase";
+import { AUTHENTICATED, UNAUTHENTICATED } from "../utils/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const AuthStateContext = createContext({
   state: UNAUTHENTICATED,
@@ -11,6 +12,7 @@ function AuthStateProvider({ children, Firebase }) {
     status: UNAUTHENTICATED,
     user: undefined,
   });
+  const [userData, setUserData] = useState({});
 
   const signOut = () => Firebase.signOut(setAuthState);
   const signUpWithEmailAndPassword = (email, password, name) => {
@@ -45,26 +47,36 @@ function AuthStateProvider({ children, Firebase }) {
   const updateEmailAddress = (email) => Firebase.updateEmailAddress(email);
   const sendPasswordResetEmail = (email) =>
     Firebase.sendPasswordResetEmail(email);
-  const sendEmailVerification = (onError) =>
-    Firebase.sendEmailVerification(onError);
   const userHasOnlyEmailProvider = () => Firebase.userHasOnlyEmailProvider();
 
   useEffect(() => {
-    let unsubscribe = Firebase.authState(setAuthState);
+    const unsubscribe = Firebase.authState(setAuthState);
     return () => unsubscribe();
+  }, [authState.user]);
+
+  useEffect(async () => {
+    if (authState.status === AUTHENTICATED) {
+      const userDoc = doc(Firebase.firestore, "users", authState.user.uid);
+      const unsub = onSnapshot(userDoc, (doc) => {
+        setUserData(doc.data());
+      });
+
+      return () => unsub();
+    }
   }, [authState.user]);
 
   return (
     <AuthStateContext.Provider
       value={{
         authState,
+        db: Firebase.firestore,
+        userData,
         signOut,
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,
         signInWithGoogle,
         updateEmailAddress,
         sendPasswordResetEmail,
-        sendEmailVerification,
         userHasOnlyEmailProvider,
       }}
     >

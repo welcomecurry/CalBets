@@ -49,8 +49,11 @@ const StyledMenu = styled((props) => (
 }));
 
 const BetButton = (props) => {
+  const { teamName, teamImage, price, handlePlaceBet } = props;
   const [anchorEl, setAnchorEl] = useState(null);
+  const [betValue, setBetValue] = useState("");
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -69,7 +72,7 @@ const BetButton = (props) => {
         disableElevation
         onClick={handleClick}
       >
-        {props.odds}
+        {price}
       </Button>
       <StyledMenu
         id="demo-customized-menu"
@@ -81,8 +84,8 @@ const BetButton = (props) => {
         onClose={handleClose}
       >
         <MenuItem sx={{ width: "25rem" }}>
-          <img className="teamBadge" src={props.image}></img>
-          {props.team + " " + props.odds}
+          <img className="teamBadge" src={teamImage}></img>
+          {teamName + " " + price}
         </MenuItem>
         <div className="field">
           <MenuItem disableRipple>
@@ -90,14 +93,16 @@ const BetButton = (props) => {
               id="outlined-basic"
               label="Bet Amount"
               variant="outlined"
+              type="number"
+              value={betValue}
+              onChange={(e) => setBetValue(e.target.value)}
             />
             <Button
-              id="demo-customized-button"
-              aria-controls="demo-customized-menu"
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : null}
-              variant="contained"
-              disableElevation
+              disabled={betValue.length == 0 || parseFloat(betValue) <= 0}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePlaceBet(price, parseFloat(betValue));
+              }}
             >
               Bet
             </Button>

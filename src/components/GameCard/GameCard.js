@@ -5,20 +5,34 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { BetButton } from "../BetButton/BetButton";
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
-import "./GameCard.css";
+
+import {
+  setGame,
+  updateUserBalance,
+  setUserBet,
+} from "../../utils/firebaseFunctions";
 
 const GameCard = (props) => {
   const [teamOneImage, setTeamOneImage] = useState(CalBetsLogo);
   const [teamTwoImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
+  const { db, gameId, leagueName, gameStartTime, userId, teamOne, teamTwo } =
+    props;
 
   useEffect(async () => {
-    const image1 = await fetchTeamImage(props.teamOneName);
-    const image2 = await fetchTeamImage(props.teamTwoName);
+    const image1 = await fetchTeamImage(teamOne.name);
+    const image2 = await fetchTeamImage(teamTwo.name);
 
     if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
     if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
   }, []);
+
+  const handlePlaceBet = async (price, value) => {
+    const game = { id: gameId, teamOne: teamOne.name, teamTwo: teamTwo.name };
+    await setGame(db, game);
+    await setUserBet(db, userId, gameId, price, value);
+    await updateUserBalance(db, userId, value);
+  };
 
   return (
     <div className="container">
@@ -36,7 +50,7 @@ const GameCard = (props) => {
               style={{ fontWeight: "bold" }}
               gutterBottom
             >
-              {props.title}
+              {leagueName}
             </Typography>
             <Typography variant="body2"></Typography>
             <div className="te">
@@ -46,12 +60,13 @@ const GameCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {props.teamOneName}
+                  {teamOne.name}
                 </Typography>
                 <BetButton
-                  odds={props.teamOneOdds}
-                  team={props.teamOneName}
-                  image={teamOneImage}
+                  teamName={teamOne.name}
+                  teamImage={teamOneImage}
+                  price={teamOne.price}
+                  handlePlaceBet={handlePlaceBet}
                 />
               </div>
             </div>
@@ -62,12 +77,13 @@ const GameCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {props.teamTwoName}
+                  {teamTwo.name}
                 </Typography>
                 <BetButton
-                  odds={props.teamTwoOdds}
-                  team={props.teamTwoName}
-                  image={teamTwoImage}
+                  teamName={teamTwo.name}
+                  teamImage={teamTwoImage}
+                  price={teamTwo.price}
+                  handlePlaceBet={handlePlaceBet}
                 />
               </div>
             </div>
@@ -75,7 +91,7 @@ const GameCard = (props) => {
               <Typography variant="body2">In Progress</Typography>
             ) : (
               <Typography variant="body2">
-                {new Date(props.time).toLocaleString([], {
+                {new Date(gameStartTime).toLocaleString([], {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",

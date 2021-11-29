@@ -17,7 +17,7 @@ import { Balance } from "../components/Balance/Balance";
 import { fetchLiveResults } from "../services/LiveResultsAPI";
 
 const Home = () => {
-  const { authState, signOut } = useAuthStateContext();
+  const { authState, db, userData, signOut } = useAuthStateContext();
   const [isSignIn, setIsSignIn] = useState(false);
   const [odds, setOdds] = useState([]);
   const [sport, setSport] = useState("");
@@ -28,7 +28,6 @@ const Home = () => {
     if (authState.status === AUTHENTICATED && sport !== "") {
       const oddsData = await fetchOdds(sport);
       const liveResultsData = await fetchLiveResults("soccer");
-
       if (liveResultsData) setLiveResults(liveResultsData);
       // TODO: show live results
       console.log(liveResultsData);
@@ -71,7 +70,7 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <Balance></Balance>
+          <Balance value={userData.balance} />
           <Box sx={{ minWidth: 120 }}>
             <FormControl>
               <Select
@@ -92,7 +91,13 @@ const Home = () => {
             setSelectedLeague={setSelectedLeague}
             odds={odds}
           />
-          <GameCardList odds={odds} selectedLeague={selectedLeague} liveResults={liveResults} />
+          <GameCardList
+            db={db}
+            userId={authState.user.uid}
+            odds={odds}
+            selectedLeague={selectedLeague}
+            liveResults={liveResults}
+          />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}
             variant="contained"
