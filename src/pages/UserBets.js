@@ -6,13 +6,14 @@ import { useAuthStateContext } from "../components/AuthStateContext";
 
 const UserBets = () => {
   const { authState, userData, userBets, signOut } = useAuthStateContext();
+  const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   return (
     <div>
       <nav>
         <RouterLink to="/">Place Bets</RouterLink>
       </nav>
-      {authState.status === AUTHENTICATED && (
+      {isAuthenticated && (
         <div>
           <div>Name: {authState.user.displayName}</div>
           <div>Email: {authState.user.email}</div>

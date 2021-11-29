@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { AUTHENTICATED, UNAUTHENTICATED } from "../utils/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
-import { fetchUserBets, fetchGame } from "../utils/firebaseFunctions";
+import { doc, collection, onSnapshot } from "firebase/firestore";
+import { fetchGame } from "../utils/firebaseFunctions";
 
 const AuthStateContext = createContext({
   state: UNAUTHENTICATED,
@@ -15,6 +15,7 @@ function AuthStateProvider({ children, Firebase }) {
   });
   const [userData, setUserData] = useState({});
   const [userBets, setUserBets] = useState({});
+  const [userBetsWithGames, setUserBetsWithGames] = useState({});
 
   const signOut = () => Firebase.signOut(setAuthState);
   const signUpWithEmailAndPassword = (email, password, name) => {
@@ -56,24 +57,43 @@ function AuthStateProvider({ children, Firebase }) {
     return () => unsubscribe();
   }, [authState.user]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (authState.status === AUTHENTICATED) {
       const userDoc = doc(Firebase.firestore, "users", authState.user.uid);
       const unsub = onSnapshot(userDoc, (doc) => {
         setUserData(doc.data());
       });
 
-      const userBets = await fetchUserBets(Firebase.firestore, authState.user.uid);
-      for (const gameId in userBets) {
-        const bet = userBets[gameId];
-        const game = await fetchGame(Firebase.firestore, gameId);
-        userBets[gameId] = { ...game, ...bet };
-      };
-      setUserBets(userBets);
-
       return () => unsub();
     }
   }, [authState.status === AUTHENTICATED]);
+
+  useEffect(() => {
+    if (authState.status === AUTHENTICATED) {
+      const betsRef = collection(Firebase.firestore, "users", authState.user.uid, "bets");
+      const unsub = onSnapshot(betsRef, (snapshot) => {
+        var userBets = {}
+        snapshot.forEach((doc) => {
+          userBets[doc.id] = doc.data();
+        });
+        setUserBets(userBets);
+      });
+
+      // Stop listening to changes
+      return () => unsub();
+    }
+  }, [authState.status === AUTHENTICATED]);
+
+  useEffect(async () => {
+      var userBetsWithGames = {}
+      for (const gameId in userBets) {
+        const bet = userBets[gameId];
+        const game = await fetchGame(Firebase.firestore, gameId);
+        userBetsWithGames[gameId] = { ...game, ...bet };
+      };
+
+      setUserBetsWithGames(userBetsWithGames)
+  }, [userBets]);
 
   return (
     <AuthStateContext.Provider
@@ -81,7 +101,7 @@ function AuthStateProvider({ children, Firebase }) {
         authState,
         db: Firebase.firestore,
         userData,
-        userBets,
+        userBets: userBetsWithGames,
         signOut,
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,

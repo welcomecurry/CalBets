@@ -24,9 +24,10 @@ const Home = () => {
   const [sport, setSport] = useState("");
   const [selectedLeague, setSelectedLeague] = useState("");
   // const [liveResults, setLiveResults] = useState([]);
+  const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   useEffect(async () => {
-    if (authState.status === AUTHENTICATED && sport !== "") {
+    if (isAuthenticated && sport !== "") {
       const oddsData = await fetchOdds(sport);
       // const liveResultsData = await fetchLiveResults("soccer");
       // if (liveResultsData) setLiveResults(liveResultsData);
@@ -38,7 +39,7 @@ const Home = () => {
   }, [sport]);
 
   useEffect(() => {
-    if (authState.status === AUTHENTICATED) {
+    if (isAuthenticated) {
       if (sport === "") setSport("upcoming");
       if (selectedLeague === "") setSelectedLeague("all");
     } else {
@@ -47,11 +48,11 @@ const Home = () => {
       setOdds([]);
       setSelectedLeague("");
     }
-  }, [authState.status === AUTHENTICATED]);
+  }, [isAuthenticated]);
 
   return (
     <div>
-      {!(authState.status === AUTHENTICATED) ? (
+      {!(isAuthenticated) ? (
         <div>
           {isSignIn ? (
             <div>
