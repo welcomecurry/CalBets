@@ -1,9 +1,5 @@
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Avatar from "@mui/material/Avatar";
-
+import { Card, CardHeader, Avatar, Grid } from "@mui/material";
 import { red } from "@mui/material/colors";
-import { Grid } from "@material-ui/core";
 
 const Balance = (props) => {
   const { value } = props;

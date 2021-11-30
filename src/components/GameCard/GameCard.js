@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Grid } from "@material-ui/core";
-import LinearProgress from "@mui/material/LinearProgress";
 import { Timestamp } from "firebase/firestore";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  LinearProgress,
+} from "@mui/material";
 
 import { BetButton } from "../BetButton/BetButton";
 import { fetchTeamImage } from "../../services/TeamImageAPI";

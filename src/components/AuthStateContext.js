@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { AUTHENTICATED, UNAUTHENTICATED } from "../utils/firebase";
 import { doc, collection, onSnapshot } from "firebase/firestore";
+import { AUTHENTICATED, UNAUTHENTICATED } from "../utils/firebase";
 import { fetchGame } from "../utils/firebaseFunctions";
 
 const AuthStateContext = createContext({

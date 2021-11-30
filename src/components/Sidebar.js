@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 
 const Sidebar = (props) => {
   const { odds, selectedLeague, setSelectedLeague } = props;

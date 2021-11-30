@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import Link from "@mui/material/Link";
-import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Box from "@mui/material/Box";
+import {
+  Link,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  Box,
+} from "@mui/material";
 
 import { useAuthStateContext } from "../components/AuthStateContext";
 import { AUTHENTICATED } from "../utils/firebase";
@@ -15,7 +17,6 @@ import { fetchOdds } from "../services/BetsAPI";
 import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
-// import { fetchLiveResults } from "../services/LiveResultsAPI";
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
@@ -23,16 +24,11 @@ const Home = () => {
   const [odds, setOdds] = useState([]);
   const [sport, setSport] = useState("");
   const [selectedLeague, setSelectedLeague] = useState("");
-  // const [liveResults, setLiveResults] = useState([]);
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   useEffect(async () => {
     if (isAuthenticated && sport !== "") {
       const oddsData = await fetchOdds(sport);
-      // const liveResultsData = await fetchLiveResults("soccer");
-      // if (liveResultsData) setLiveResults(liveResultsData);
-      // TODO: show live results
-      // console.log(liveResultsData);
       if (oddsData) setOdds(oddsData);
       setSelectedLeague("all");
     }
@@ -52,7 +48,7 @@ const Home = () => {
 
   return (
     <div>
-      {!(isAuthenticated) ? (
+      {!isAuthenticated ? (
         <div>
           {isSignIn ? (
             <div>
@@ -101,7 +97,6 @@ const Home = () => {
             userId={authState.user.uid}
             odds={odds}
             selectedLeague={selectedLeague}
-            // liveResults={liveResults}
           />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}

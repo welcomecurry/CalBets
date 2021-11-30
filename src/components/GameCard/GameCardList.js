@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { GameCard } from "./GameCard";
 import { partition } from "lodash";
-import { Box } from "@material-ui/core";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Box, CircularProgress } from "@mui/material";
+import { GameCard } from "./GameCard";
 import "./GameCard.css";
 
 const isUpcoming = (timeStart) => {
