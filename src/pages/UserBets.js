@@ -3,6 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AUTHENTICATED } from "../utils/firebase";
 import { useAuthStateContext } from "../components/AuthStateContext";
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 const UserBets = () => {
   const { authState, userData, userBets, userGames, signOut } = useAuthStateContext();
@@ -11,7 +12,12 @@ const UserBets = () => {
   return (
     <div>
       <nav>
-        <RouterLink to="/">Place Bets</RouterLink>
+      <RouterLink to="/">
+        <Button variant="contained">
+          <MonetizationOnIcon/>
+          Place Bets
+        </Button>
+      </RouterLink>       
       </nav>
       {isAuthenticated && (
         <div>
