@@ -13,8 +13,11 @@ import { useAuthStateContext } from "../components/AuthStateContext";
 import { AUTHENTICATED } from "../utils/firebase";
 import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
-import { fetchOdds } from "../services/BetsAPI";
-import { Sidebar } from "../components/Sidebar";
+import {
+  getOddsBySport,
+  getResultsBySport,
+} from "../services/JsonOddsAPI";
+// import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
 
@@ -22,27 +25,35 @@ const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
   const [isSignIn, setIsSignIn] = useState(false);
   const [odds, setOdds] = useState([]);
+  const [results, setResults] = useState([]);
   const [sport, setSport] = useState("");
-  const [selectedLeague, setSelectedLeague] = useState("");
+  // const [selectedLeague, setSelectedLeague] = useState("");
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   useEffect(async () => {
-    if (isAuthenticated && sport !== "") {
-      const oddsData = await fetchOdds(sport);
+    if (isAuthenticated && sport != "") {
+      const oddsData = await getOddsBySport(sport);
       if (oddsData) setOdds(oddsData);
-      setSelectedLeague("all");
+      const resultsData = await getResultsBySport(sport);
+      if (resultsData) setResults(resultsData.filter((e) => e.OddType === "Game"));
+      // setSelectedLeague("all");
     }
   }, [sport]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (sport === "") setSport("upcoming");
-      if (selectedLeague === "") setSelectedLeague("all");
+      if (sport === "") setSport("nba");
+      console.log("odds");
+      console.log(odds);
+      console.log("results");
+      console.log(results);
+      // if (selectedLeague === "") setSelectedLeague("all");
     } else {
       // reset state if user not logged in
       setSport("");
       setOdds([]);
-      setSelectedLeague("");
+      setResults([]);
+      // setSelectedLeague("");
     }
   }, [isAuthenticated]);
 
@@ -80,23 +91,25 @@ const Home = () => {
                 value={sport}
                 onChange={(e) => setSport(e.target.value)}
               >
-                <MenuItem value={"upcoming"}>Upcoming Events</MenuItem>
-                <MenuItem value={"americanfootball"}>Football</MenuItem>
-                <MenuItem value={"basketball"}>Basketball</MenuItem>
-                <MenuItem value={"soccer"}>Soccer</MenuItem>
+                <MenuItem value={"mlb"}>MLB</MenuItem>
+                <MenuItem value={"nba"}>NBA</MenuItem>
+                <MenuItem value={"nfl"}>NFL</MenuItem>
+                <MenuItem value={"nhl"}>NHL</MenuItem>
+                <MenuItem value={"tennis"}>Tennis</MenuItem>
               </Select>
             </FormControl>
           </Box>
-          <Sidebar
+          {/* <Sidebar
             selectedLeague={selectedLeague}
             setSelectedLeague={setSelectedLeague}
             odds={odds}
-          />
+          /> */}
           <GameCardList
             db={db}
             userId={authState.user.uid}
             odds={odds}
-            selectedLeague={selectedLeague}
+            results={results}
+            // selectedLeague={selectedLeague}
           />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}

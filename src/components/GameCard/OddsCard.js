@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { BetButton } from "../BetButton/BetButton";
-import { fetchTeamImage } from "../../services/TeamImageAPI";
+// import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 
 import {
@@ -18,24 +18,24 @@ import {
   updateUserBalance,
 } from "../../utils/firebaseFunctions";
 
-const GameCard = (props) => {
-  const [teamOneImage, setTeamOneImage] = useState(CalBetsLogo);
-  const [teamTwoImage, setTeamTwoImage] = useState(CalBetsLogo);
+const OddsCard = (props) => {
+  const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
+  const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const { db, gameId, leagueName, gameStartTime, userId, teamOne, teamTwo } =
+  const { db, key: gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
     props;
 
-  useEffect(async () => {
-    const image1 = await fetchTeamImage(teamOne.name);
-    const image2 = await fetchTeamImage(teamTwo.name);
+  // useEffect(async () => {
+  //   const image1 = await fetchTeamImage(homeTeam.name);
+  //   const image2 = await fetchTeamImage(awayTeam.name);
 
-    if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
-    if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
-  }, []);
+  //   if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
+  //   if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
+  // }, []);
 
   const handlePlaceBet = async (price, value, choice) => {
     const game = {
-      teams: [teamOne.name, teamTwo.name],
+      teams: [homeTeam.name, awayTeam.name],
       date: Timestamp.fromDate(new Date(gameStartTime)),
     };
     await setGame(db, gameId, game);
@@ -63,36 +63,36 @@ const GameCard = (props) => {
             </Typography>
             <Typography variant="body2"></Typography>
             <div className="te">
-              <img className="teamBadge" src={teamOneImage}></img>
+              <img className="teamBadge" src={homeTeamImage}></img>
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {teamOne.name}
+                  {homeTeam.name}
                 </Typography>
                 <BetButton
-                  teamName={teamOne.name}
-                  teamImage={teamOneImage}
-                  price={teamOne.price}
+                  teamName={homeTeam.name}
+                  teamImage={homeTeamImage}
+                  price={homeTeam.price}
                   choice={0}
                   handlePlaceBet={handlePlaceBet}
                 />
               </div>
             </div>
             <div className="te">
-              <img className="teamBadge" src={teamTwoImage}></img>
+              <img className="teamBadge" src={awayTeamImage}></img>
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {teamTwo.name}
+                  {awayTeam.name}
                 </Typography>
                 <BetButton
-                  teamName={teamTwo.name}
-                  teamImage={teamTwoImage}
-                  price={teamTwo.price}
+                  teamName={awayTeam.name}
+                  teamImage={awayTeamImage}
+                  price={awayTeam.price}
                   choice={1}
                   handlePlaceBet={handlePlaceBet}
                 />
@@ -126,4 +126,4 @@ const GameCard = (props) => {
   );
 };
 
-export { GameCard };
+export { OddsCard };

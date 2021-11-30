@@ -1,73 +1,76 @@
 import { useState, useEffect } from "react";
 import { partition } from "lodash";
 import { Box, CircularProgress } from "@mui/material";
-import { GameCard } from "./GameCard";
-import "./GameCard.css";
+import { OddsCard } from "./OddsCard";
+import { ResultCard } from "../ResultCard";
+import "./OddsCard.css";
 
-const isUpcoming = (timeStart) => {
-  const now = new Date();
-  const dateStart = new Date(timeStart);
-  return now.getTime() < dateStart.getTime();
-};
+// const isUpcoming = (timeStart) => {
+//   const now = new Date();
+//   const dateStart = new Date(timeStart);
+//   return now.getTime() < dateStart.getTime();
+// };
 
 const GameCardList = (props) => {
-  const { db, selectedLeague, odds, userId } = props;
-  const [upcomingOdds, setUpcomingOdds] = useState([]);
+  const { db, selectedLeague, odds, results, userId } = props;
+  // const [upcomingOdds, setUpcomingOdds] = useState([]);
   const [startedOdds, setStartedOdds] = useState([]);
 
-  useEffect(() => {
-    const [upcomingOddsNew, startedOddsNew] = partition(odds, (e) =>
-      isUpcoming(e.commence_time)
-    );
-    setStartedOdds(startedOddsNew);
-    setUpcomingOdds(upcomingOddsNew);
-  }, [odds]);
+  // useEffect(() => {
+  //   const [upcomingOddsNew, startedOddsNew] = partition(odds, (e) =>
+  //     isUpcoming(e.MatchTime)
+  //   );
+  //   setStartedOdds(startedOddsNew);
+  //   setUpcomingOdds(upcomingOddsNew);
+  // }, [odds]);
 
   return (
     <div>
       <Box sx={{ border: "1px dashed grey" }}>
-        {startedOdds.length === 0 ? <CircularProgress /> : "Ongoing"}
-        {startedOdds
-          .filter(
-            (e) => selectedLeague === "all" || e.sport_title === selectedLeague
-          )
-          .map((e) => {
-            const { outcomes } = e.bookmakers[0].markets[0];
-            return (
-              <GameCard
-                db={db}
-                gameId={e.id}
-                leagueName={e.sport_title}
-                gameStartTime={e.commence_time}
-                teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
-                teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
-                isLive={true}
-                userId={userId}
-              />
-            );
-          })}
+        {results.length === 0 ? <CircularProgress /> : <div>Results</div>}
+        {results.map((e) => {
+          return (
+            <ResultCard
+              db={db}
+              key={e.ID}
+              leagueName={e.Sport}
+              homeTeam={{
+                name: "TODO",
+                score: e.HomeScore,
+              }}
+              awayTeam={{
+                name: "TODO",
+                score: e.AwayScore,
+              }}
+              isLive={!e.Final}
+              userId={userId}
+            />
+          );
+        })}
       </Box>
       <Box sx={{ border: "1px dashed grey" }}>
-        {upcomingOdds.length === 0 ? <CircularProgress /> : "Upcoming"}
-        {upcomingOdds
-          .filter(
-            (e) => selectedLeague === "all" || e.sport_title === selectedLeague
-          )
-          .map((e) => {
-            const { outcomes } = e.bookmakers[0].markets[0];
-            return (
-              <GameCard
-                db={db}
-                gameId={e.id}
-                leagueName={e.sport_title}
-                gameStartTime={e.commence_time}
-                teamOne={{ name: outcomes[0].name, price: outcomes[0].price }}
-                teamTwo={{ name: outcomes[1].name, price: outcomes[1].price }}
-                isLive={false}
-                userId={userId}
-              />
-            );
-          })}
+        {odds.length === 0 ? <CircularProgress /> : <div>Odds</div>}
+        {odds.map((e) => {
+          return (
+            <OddsCard
+              db={db}
+              key={e.ID}
+              leagueName={e.Sport}
+              gameStartTime={e.MatchTime}
+              homeTeam={{
+                name: e.HomeTeam,
+                price: e.Odds[0].TotalNumber,
+              }}
+              // TODO: FIND OUT WHY SOME ODDS ONLY ONE VALUE
+              awayTeam={{
+                name: e.AwayTeam,
+                price: e.Odds[0].TotalNumber,
+              }}
+              isLive={false}
+              userId={userId}
+            />
+          );
+        })}
       </Box>
     </div>
   );
