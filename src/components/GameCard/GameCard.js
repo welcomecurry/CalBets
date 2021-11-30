@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 import LinearProgress from "@mui/material/LinearProgress";
+import { Timestamp } from "firebase/firestore";
 
 import { BetButton } from "../BetButton/BetButton";
 import { fetchTeamImage } from "../../services/TeamImageAPI";
@@ -8,8 +9,8 @@ import CalBetsLogo from "../../CalBetsLogo.png";
 
 import {
   setGame,
+  createUserBet,
   updateUserBalance,
-  setUserBet,
 } from "../../utils/firebaseFunctions";
 
 const GameCard = (props) => {
@@ -27,10 +28,13 @@ const GameCard = (props) => {
     if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
   }, []);
 
-  const handlePlaceBet = async (price, value) => {
-    const game = { id: gameId, teamOne: teamOne.name, teamTwo: teamTwo.name };
-    await setGame(db, game);
-    await setUserBet(db, userId, gameId, price, value);
+  const handlePlaceBet = async (price, value, choice) => {
+    const game = {
+      teams: [teamOne.name, teamTwo.name],
+      date: Timestamp.fromDate(new Date(gameStartTime)),
+    };
+    await setGame(db, gameId, game);
+    await createUserBet(db, userId, gameId, price, value, choice);
     await updateUserBalance(db, userId, value);
   };
 
@@ -66,6 +70,7 @@ const GameCard = (props) => {
                   teamName={teamOne.name}
                   teamImage={teamOneImage}
                   price={teamOne.price}
+                  choice={0}
                   handlePlaceBet={handlePlaceBet}
                 />
               </div>
@@ -83,6 +88,7 @@ const GameCard = (props) => {
                   teamName={teamTwo.name}
                   teamImage={teamTwoImage}
                   price={teamTwo.price}
+                  choice={1}
                   handlePlaceBet={handlePlaceBet}
                 />
               </div>

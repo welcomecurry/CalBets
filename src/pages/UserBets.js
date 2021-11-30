@@ -5,7 +5,7 @@ import { AUTHENTICATED } from "../utils/firebase";
 import { useAuthStateContext } from "../components/AuthStateContext";
 
 const UserBets = () => {
-  const { authState, userData, userBets, signOut } = useAuthStateContext();
+  const { authState, userData, userBets, userGames, signOut } = useAuthStateContext();
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   return (
@@ -19,6 +19,7 @@ const UserBets = () => {
           <div>Email: {authState.user.email}</div>
           <div>Balance: {userData.balance}</div>
           {<div>Placed Bets: {JSON.stringify(userBets)}</div>}
+          {<div>Games: {JSON.stringify(userGames)}</div>}
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}
             variant="contained"

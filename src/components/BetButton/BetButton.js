@@ -49,7 +49,7 @@ const StyledMenu = styled((props) => (
 }));
 
 const BetButton = (props) => {
-  const { teamName, teamImage, price, handlePlaceBet } = props;
+  const { teamName, teamImage, price, choice, handlePlaceBet } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [betValue, setBetValue] = useState("");
   const open = Boolean(anchorEl);
@@ -101,7 +101,7 @@ const BetButton = (props) => {
               disabled={betValue.length == 0 || parseFloat(betValue) <= 0}
               onClick={(e) => {
                 e.preventDefault();
-                handlePlaceBet(price, parseFloat(betValue));
+                handlePlaceBet(price, parseFloat(betValue), choice);
               }}
             >
               Bet

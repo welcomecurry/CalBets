@@ -15,7 +15,7 @@ function AuthStateProvider({ children, Firebase }) {
   });
   const [userData, setUserData] = useState({});
   const [userBets, setUserBets] = useState({});
-  const [userBetsWithGames, setUserBetsWithGames] = useState({});
+  const [userGames, setUserGames] = useState({});
 
   const signOut = () => Firebase.signOut(setAuthState);
   const signUpWithEmailAndPassword = (email, password, name) => {
@@ -85,14 +85,14 @@ function AuthStateProvider({ children, Firebase }) {
   }, [authState.status === AUTHENTICATED]);
 
   useEffect(async () => {
-      var userBetsWithGames = {}
-      for (const gameId in userBets) {
-        const bet = userBets[gameId];
-        const game = await fetchGame(Firebase.firestore, gameId);
-        userBetsWithGames[gameId] = { ...game, ...bet };
+      var games = {}
+      for (const betId in userBets) {
+        const bet = userBets[betId];
+        const game = await fetchGame(Firebase.firestore, bet.gameId);
+        games[bet.gameId] = game;
       };
 
-      setUserBetsWithGames(userBetsWithGames)
+      setUserGames(games)
   }, [userBets]);
 
   return (
@@ -101,7 +101,8 @@ function AuthStateProvider({ children, Firebase }) {
         authState,
         db: Firebase.firestore,
         userData,
-        userBets: userBetsWithGames,
+        userBets,
+        userGames,
         signOut,
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,

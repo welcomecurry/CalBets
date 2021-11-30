@@ -1,4 +1,5 @@
-import { collection, setDoc, doc, getDoc, getDocs} from "firebase/firestore";
+import { collection, setDoc, doc, getDoc, getDocs, Timestamp} from "firebase/firestore";
+import uuid from "uuid";
 
 const DEFAULT_BALANCE = 500;
 
@@ -38,10 +39,10 @@ const createUserData = async (db, userId) => {
   await setDoc(doc(usersRef, userId), { balance: DEFAULT_BALANCE });
 };
 
-const setGame = async (db, game) => {
+const setGame = async (db, gameId, game) => {
   // Save game details
   const gamesRef = collection(db, "games");
-  await setDoc(doc(gamesRef, game.id), game);
+  await setDoc(doc(gamesRef, gameId), game);
 };
 
 const fetchGame = async (db, gameId) => {
@@ -53,12 +54,16 @@ const fetchGame = async (db, gameId) => {
   };
 };
 
-const setUserBet = async (db, userId, gameId, odds, value) => {
+const createUserBet = async (db, userId, gameId, price, value, choice) => {
   // Add bet to user
   const betsRef = collection(db, "users", userId, "bets");
-  await setDoc(doc(betsRef, gameId), {
-    odds: odds,
+  const betId = uuid.v4();
+  await setDoc(doc(betsRef, betId), {
+    price: price,
     value: value,
+    gameId: gameId,
+    choice: choice,
+    date: Timestamp.fromDate(new Date()),
   });
 };
 
@@ -68,6 +73,6 @@ export {
   fetchGame,
   setGame,
   createUserData,
-  setUserBet,
+  createUserBet,
   updateUserBalance,
 };
