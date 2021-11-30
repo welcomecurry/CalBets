@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AUTHENTICATED } from "../utils/firebase";
+import { Balance } from "../components/Balance/Balance";
 import { useAuthStateContext } from "../components/AuthStateContext";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
@@ -11,19 +12,19 @@ const UserBets = () => {
 
   return (
     <div>
-      <nav>
       <RouterLink to="/">
         <Button variant="contained">
           <MonetizationOnIcon/>
           Place Bets
         </Button>
-      </RouterLink>       
+      </RouterLink>   
+      <Balance value={userData.balance} />
+      <nav>    
       </nav>
       {isAuthenticated && (
         <div>
           <div>Name: {authState.user.displayName}</div>
           <div>Email: {authState.user.email}</div>
-          <div>Balance: {userData.balance}</div>
           {<div>Placed Bets: {JSON.stringify(userBets)}</div>}
           {<div>Games: {JSON.stringify(userGames)}</div>}
           <Button
