@@ -20,6 +20,7 @@ import {
 // import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
@@ -80,7 +81,12 @@ const Home = () => {
       ) : (
         <div>
           <nav>
-            <RouterLink to="/user">My Bets</RouterLink>
+          <RouterLink to="/user">
+            <Button variant="contained">
+              <AccountBalanceWalletIcon/>
+               My Bets
+            </Button>
+          </RouterLink>          
           </nav>
           <Balance value={userData.balance} />
           <Box sx={{ minWidth: 120 }}>
