@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { partition } from "lodash";
+// import { partition } from "lodash";
 import { Box, CircularProgress } from "@mui/material";
 import { OddsCard } from "./OddsCard";
 import { ResultCard } from "../ResultCard";
@@ -27,50 +27,62 @@ const GameCardList = (props) => {
   return (
     <div>
       <Box sx={{ border: "1px dashed grey" }}>
-        {results.length === 0 ? <CircularProgress /> : <div>Results</div>}
-        {results.map((e) => {
-          return (
-            <ResultCard
-              db={db}
-              key={e.ID}
-              leagueName={e.Sport}
-              homeTeam={{
-                name: "TODO",
-                score: e.HomeScore,
-              }}
-              awayTeam={{
-                name: "TODO",
-                score: e.AwayScore,
-              }}
-              isLive={!e.Final}
-              userId={userId}
-            />
-          );
-        })}
+        <div>Results</div>
+        {results == null ? (
+          <CircularProgress />
+        ) : results.length == 0 ? (
+          <div>Currently no results. Try again later.</div>
+        ) : (
+          results.map((e) => {
+            return (
+              <ResultCard
+                db={db}
+                key={e.ID}
+                leagueName={e.Sport}
+                homeTeam={{
+                  name: "TODO",
+                  score: e.HomeScore,
+                }}
+                awayTeam={{
+                  name: "TODO",
+                  score: e.AwayScore,
+                }}
+                isLive={!e.Final}
+                userId={userId}
+              />
+            );
+          })
+        )}
       </Box>
       <Box sx={{ border: "1px dashed grey" }}>
-        {odds.length === 0 ? <CircularProgress /> : <div>Odds</div>}
-        {odds.map((e) => {
-          return (
-            <OddsCard
-              db={db}
-              key={e.ID}
-              leagueName={e.Sport}
-              gameStartTime={e.MatchTime}
-              homeTeam={{
-                name: e.HomeTeam,
-                price: e.Odds[0].TotalNumber,
-              }}
-              // TODO: FIND OUT WHY SOME ODDS ONLY ONE VALUE
-              awayTeam={{
-                name: e.AwayTeam,
-                price: e.Odds[0].TotalNumber,
-              }}
-              isLive={false}
-              userId={userId}
-            />
-          );
-        })}
+        <div>Odds</div>
+        {odds == null ? (
+          <CircularProgress />
+        ) : odds.length == 0 ? (
+          <div>Currently no odds. Try again later.</div>
+        ) : (
+          odds.map((e) => {
+            return (
+              <OddsCard
+                db={db}
+                key={e.ID}
+                leagueName={e.Sport}
+                gameStartTime={e.MatchTime}
+                homeTeam={{
+                  name: e.HomeTeam,
+                  price: e.Odds[0].TotalNumber,
+                }}
+                // TODO: FIND OUT WHY SOME ODDS ONLY ONE VALUE
+                awayTeam={{
+                  name: e.AwayTeam,
+                  price: e.Odds[0].TotalNumber,
+                }}
+                isLive={false}
+                userId={userId}
+              />
+            );
+          })
+        )}
       </Box>
     </div>
   );

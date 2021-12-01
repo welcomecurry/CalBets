@@ -8,6 +8,7 @@ import {
   FormControl,
   Box,
 } from "@mui/material";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 import { useAuthStateContext } from "../components/AuthStateContext";
 import { AUTHENTICATED } from "../utils/firebase";
@@ -15,18 +16,17 @@ import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
 import {
   getOddsBySport,
-  getResultsBySport,
+  getResultsBySport
 } from "../services/JsonOddsAPI";
 // import { Sidebar } from "../components/Sidebar";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
   const [isSignIn, setIsSignIn] = useState(false);
-  const [odds, setOdds] = useState([]);
-  const [results, setResults] = useState([]);
+  const [odds, setOdds] = useState(null);
+  const [results, setResults] = useState(null);
   const [sport, setSport] = useState("");
   // const [selectedLeague, setSelectedLeague] = useState("");
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
@@ -52,11 +52,16 @@ const Home = () => {
     } else {
       // reset state if user not logged in
       setSport("");
-      setOdds([]);
-      setResults([]);
+      setOdds(null);
+      setResults(null);
       // setSelectedLeague("");
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    setOdds(null)
+    setResults(null)
+  }, [sport]);
 
   return (
     <div>
@@ -86,7 +91,7 @@ const Home = () => {
               <AccountBalanceWalletIcon/>
                My Bets
             </Button>
-          </RouterLink>          
+          </RouterLink>
           </nav>
           <Balance value={userData.balance} />
           <Box sx={{ minWidth: 120 }}>
