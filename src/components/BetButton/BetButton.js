@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import { Button, Menu, MenuItem, TextField } from "@mui/material";
+import CountUp from "react-countup";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -69,7 +70,13 @@ const BetButton = (props) => {
         disableElevation
         onClick={handleClick}
       >
-        {price}
+        <CountUp
+          start={0.0}
+          end={price}
+          duration={1}
+          separator=","
+          decimals="2"
+          />
       </Button>
       <StyledMenu
         id="demo-customized-menu"
