@@ -22,7 +22,7 @@ const OddsCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
   const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const { db, key: gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
+  const { db, gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
     props;
 
   // useEffect(async () => {

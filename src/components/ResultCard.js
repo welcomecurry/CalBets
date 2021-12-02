@@ -6,9 +6,8 @@ import {
   Typography,
   Grid,
   LinearProgress,
-  Button
+  Button,
 } from "@mui/material";
-
 
 import { fetchTeamImage } from "../services/TeamImageAPI";
 import CalBetsLogo from "../CalBetsLogo.png";
@@ -17,8 +16,7 @@ const ResultCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
   const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const { db, key: gameId, leagueName, homeTeam, awayTeam } =
-    props;
+  const { leagueName, homeTeam, awayTeam } = props;
 
   // useEffect(async () => {
   //   const image1 = await fetchTeamImage(homeTeam.name);

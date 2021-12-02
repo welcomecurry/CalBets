@@ -36,7 +36,6 @@ const GameCardList = (props) => {
           results.map((e) => {
             return (
               <ResultCard
-                db={db}
                 key={e.ID}
                 leagueName={e.Sport}
                 homeTeam={{
@@ -66,6 +65,7 @@ const GameCardList = (props) => {
               <OddsCard
                 db={db}
                 key={e.ID}
+                gameId={e.ID}
                 leagueName={e.Sport}
                 gameStartTime={e.MatchTime}
                 homeTeam={{

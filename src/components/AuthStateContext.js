@@ -13,9 +13,9 @@ function AuthStateProvider({ children, Firebase }) {
     status: UNAUTHENTICATED,
     user: undefined,
   });
-  const [userData, setUserData] = useState({});
-  const [userBets, setUserBets] = useState({});
-  const [userGames, setUserGames] = useState({});
+  const [userData, setUserData] = useState(null);
+  const [userBets, setUserBets] = useState(null);
+  const [userGames, setUserGames] = useState(null);
 
   const signOut = () => Firebase.signOut(setAuthState);
   const signUpWithEmailAndPassword = (email, password, name) => {

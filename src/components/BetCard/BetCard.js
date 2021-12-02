@@ -1,38 +1,30 @@
 import { useState, useEffect } from "react";
-import { Timestamp } from "firebase/firestore";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  LinearProgress,
-} from "@mui/material";
+import { CardContent, Typography, Grid, LinearProgress } from "@mui/material";
 
-import { BetButton } from "../BetButton/BetButton";
 // import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 
 const BetCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
-  const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const { db, key: gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
-    props;
+  const { leagueName, gameStartTime, choice, teamNames, value: betValue, betDate } = props;
 
   // useEffect(async () => {
-  //   const image1 = await fetchTeamImage(homeTeam.name);
-  //   const image2 = await fetchTeamImage(awayTeam.name);
+  //   const image1 = await fetchTeamImage(teamNames[0]);
+  //   const image2 = await fetchTeamImage(teamNames[1]);
 
   //   if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
   //   if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
   // }, []);
+
   const generateRandomrgbaColor = () => {
-    const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+    const randomBetween = (min, max) =>
+      min + Math.floor(Math.random() * (max - min + 1));
     const r = randomBetween(0, 255);
     const g = randomBetween(0, 255);
     const b = randomBetween(0, 255);
     return `rgba(131, ${r}, ${g}, ${b})`;
-  }
+  };
 
   return (
     <div className="container">
@@ -43,8 +35,8 @@ const BetCard = (props) => {
           md={8}
           className={isLive ? "card" : "card card-foot"}
           style={{
-            borderBottom: `10px solid ${generateRandomrgbaColor()}`
-           }}
+            borderBottom: `10px solid ${generateRandomrgbaColor()}`,
+          }}
         >
           <CardContent>
             <Typography
@@ -62,7 +54,7 @@ const BetCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {"bettedTeam.name"}
+                  {teamNames[choice]}
                 </Typography>
               </div>
             </div>
@@ -72,13 +64,13 @@ const BetCard = (props) => {
                   style={{ fontWeight: "bold", justifyContent: "center" }}
                   color="textSecondary"
                 >
-                  {"homeTeam.name vs awayTeam.name"}
+                  {`${teamNames[0]} vs ${teamNames[1]}`}
                 </Typography>
                 <Typography
                   style={{ fontWeight: "bold", justifyContent: "center" }}
                   color="textSecondary"
                 >
-                  {"odds / amount bet"}
+                  {betValue}
                 </Typography>
               </div>
             </div>
@@ -86,7 +78,7 @@ const BetCard = (props) => {
               <Typography variant="body2">In Progress</Typography>
             ) : (
               <Typography variant="body2">
-                {new Date(gameStartTime).toLocaleString([], {
+                {gameStartTime.toDate().toLocaleString([], {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",
