@@ -1,6 +1,6 @@
 const API_KEY = "71e0811c-517e-11ec-89ba-0ae9bc51dafd";
 
-const BASE_URL = "https://jsonodds.com/api";
+const BASE_URL = "https://api.jsonodds.com";
 
 const performGetRequest = async (url) => {
   const res = await fetch(url, {
