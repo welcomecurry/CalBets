@@ -59,8 +59,8 @@ const getResultsByMatches = async (gamesRequest) => {
   return res.json();
 };
 
-const getOddsByMatches = (gamesRequest) => {
-  const res = fetch(`${BASE_URL}/odds/bygames`, {
+const getOddsByMatches = async (gamesRequest) => {
+  const res = await fetch(`${BASE_URL}/odds/bygames`, {
     method: "POST",
     body: gamesRequest,
     headers: {
