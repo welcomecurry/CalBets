@@ -12,13 +12,7 @@ import { BetButton } from "../BetButton/BetButton";
 // import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 
-import {
-  setGame,
-  createUserBet,
-  updateUserBalance,
-} from "../../utils/firebaseFunctions";
-
-const OddsCard = (props) => {
+const BetCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
   const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
@@ -32,7 +26,6 @@ const OddsCard = (props) => {
   //   if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
   //   if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
   // }, []);
-
   const generateRandomrgbaColor = () => {
     const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
     const r = randomBetween(0, 255);
@@ -41,16 +34,6 @@ const OddsCard = (props) => {
     return `rgba(131, ${r}, ${g}, ${b})`;
   }
 
-  const handlePlaceBet = async (price, value, choice) => {
-    const game = {
-      teams: [homeTeam.name, awayTeam.name],
-      date: Timestamp.fromDate(new Date(gameStartTime)),
-    };
-    await setGame(db, gameId, game);
-    await createUserBet(db, userId, gameId, price, value, choice);
-    await updateUserBalance(db, userId, value);
-  };
-
   return (
     <div className="container">
       <Grid container justifyContent="center">
@@ -58,7 +41,6 @@ const OddsCard = (props) => {
           item
           xs={6}
           md={8}
-          component={Card}
           className={isLive ? "card" : "card card-foot"}
           style={{
             borderBottom: `10px solid ${generateRandomrgbaColor()}`
@@ -80,33 +62,24 @@ const OddsCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {homeTeam.name}
+                  {"bettedTeam.name"}
                 </Typography>
-                <BetButton
-                  teamName={homeTeam.name}
-                  teamImage={homeTeamImage}
-                  price={homeTeam.price}
-                  choice={0}
-                  handlePlaceBet={handlePlaceBet}
-                />
               </div>
             </div>
             <div className="te">
-              <img className="teamBadge" src={awayTeamImage}></img>
               <div className="row">
                 <Typography
-                  style={{ fontWeight: "bold" }}
+                  style={{ fontWeight: "bold", justifyContent: "center" }}
                   color="textSecondary"
                 >
-                  {awayTeam.name}
+                  {"homeTeam.name vs awayTeam.name"}
                 </Typography>
-                <BetButton
-                  teamName={awayTeam.name}
-                  teamImage={awayTeamImage}
-                  price={awayTeam.price}
-                  choice={1}
-                  handlePlaceBet={handlePlaceBet}
-                />
+                <Typography
+                  style={{ fontWeight: "bold", justifyContent: "center" }}
+                  color="textSecondary"
+                >
+                  {"odds / amount bet"}
+                </Typography>
               </div>
             </div>
             {isLive ? (
@@ -137,4 +110,4 @@ const OddsCard = (props) => {
   );
 };
 
-export { OddsCard };
+export { BetCard };
