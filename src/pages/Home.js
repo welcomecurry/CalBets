@@ -9,7 +9,7 @@ import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
 import {
   getOddsBySport,
-  getResultsBySport,
+  // getResultsBySport,
   getSports,
 } from "../services/JsonOddsAPI";
 import { SportSelector } from "../components/SportSelector";
@@ -20,7 +20,7 @@ const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
   const [isSignIn, setIsSignIn] = useState(false);
   const [odds, setOdds] = useState(null);
-  const [results, setResults] = useState(null);
+  // const [results, setResults] = useState(null);
   const [sports, setSports] = useState(null);
   const [selectedSport, setSelectedSport] = useState("");
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
@@ -32,18 +32,21 @@ const Home = () => {
 
   useEffect(async () => {
     if (isAuthenticated && selectedSport != "") {
-      const [oddsData, resultsData] = await Promise.all([
+      const [
+        oddsData,
+        // resultsData
+      ] = await Promise.all([
         getOddsBySport(selectedSport),
-        getResultsBySport(selectedSport),
+        // getResultsBySport(selectedSport),
       ]);
       if (oddsData) setOdds(oddsData);
       console.log("odds");
       console.log(oddsData);
       console.log(sports);
-      if (resultsData)
-        setResults(resultsData.filter((e) => e.OddType === "Game"));
-      console.log("results");
-      console.log(resultsData);
+      // if (resultsData)
+      //   setResults(resultsData.filter((e) => e.OddType === "Game"));
+      // console.log("results");
+      // console.log(resultsData);
     }
   }, [selectedSport]);
 
@@ -54,13 +57,13 @@ const Home = () => {
       // reset state if user not logged in
       setSelectedSport("");
       setOdds(null);
-      setResults(null);
+      // setResults(null);
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
     setOdds(null);
-    setResults(null);
+    // setResults(null);
   }, [selectedSport]);
 
   return (
@@ -101,7 +104,7 @@ const Home = () => {
             db={db}
             userId={authState.user.uid}
             odds={odds}
-            results={results}
+            // results={results}
             sports={sports}
           />
           <Button
