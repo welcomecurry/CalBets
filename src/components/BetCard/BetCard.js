@@ -50,16 +50,25 @@ const BetCard = (props) => {
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
-                  color="textSecondary"
+                  color="textPrimary"
                 >
-                  {teamNames[choice]} {betPrice}
+                  {teamNames[choice]}: {betPrice}
                 </Typography>
-                <Typography
-                  style={{ fontWeight: "bold", marginBottom: "1rem"}}
-                  color="textSecondary"
-                >
-                  Amount Bet: {betValue}
-              </Typography>
+                <div>
+                  <Typography
+                    style={{ fontWeight: "bold", marginBottom: "1rem"}}
+                    color="textPrimary"
+                  >
+                    Amount Bet: {betValue}
+                    <Typography
+                    style={{ marginBottom: "1rem"}}
+                    color="textSecondary"
+                    variant="body2"
+                  >
+                    Win Amount:
+                  </Typography>
+                </Typography>
+              </div>
               </div>
             </div>
             {isLive ? (
