@@ -52,7 +52,7 @@ const BetCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {teamNames[choice]}
+                  {teamNames[choice]} TODO: BETTED ODDS
                 </Typography>
                 <Typography
                   style={{ fontWeight: "bold", marginBottom: "1rem"}}
@@ -66,7 +66,7 @@ const BetCard = (props) => {
               <Typography variant="body2">In Progress</Typography>
             ) : (
               <Typography variant="body2">
-                {gameStartTime.toDate().toLocaleString([], {
+                {betDate.toDate().toLocaleString([], {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",
