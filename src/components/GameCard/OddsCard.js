@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { BetButton } from "../BetButton/BetButton";
-// import { fetchTeamImage } from "../../services/TeamImageAPI";
+import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 
 import {
@@ -24,14 +24,14 @@ const OddsCard = (props) => {
   const [isLive, setIsLive] = useState(props.isLive);
   const { db, gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
     props;
+    
+  useEffect(async () => {
+    const image1 = await fetchTeamImage(homeTeam.name);
+    const image2 = await fetchTeamImage(awayTeam.name);
 
-  // useEffect(async () => {
-  //   const image1 = await fetchTeamImage(homeTeam.name);
-  //   const image2 = await fetchTeamImage(awayTeam.name);
-
-  //   if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
-  //   if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
-  // }, []);
+    if (image1 && image1.value) setTeamOneImage(image1.value[0].contentUrl);
+    if (image2 && image2.value) setTeamTwoImage(image2.value[0].contentUrl);
+  }, []);
 
   const generateRandomrgbaColor = () => {
     const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));

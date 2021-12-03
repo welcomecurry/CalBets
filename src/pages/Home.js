@@ -19,6 +19,7 @@ import { SportSelector } from "../components/SportSelector";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
 
+
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
   const [isSignIn, setIsSignIn] = useState(false);
