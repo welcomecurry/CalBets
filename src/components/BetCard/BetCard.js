@@ -40,13 +40,11 @@ const BetCard = (props) => {
         >
           <CardContent>
             <Typography
-              variant="body2"
-              style={{ fontWeight: "bold" }}
-              gutterBottom
-            >
-              {leagueName}
+                style={{ fontWeight: "bold"}}
+                color="textSecondary"
+              >
+                {`${teamNames[0]} vs ${teamNames[1]}`}
             </Typography>
-            <Typography variant="body2"></Typography>
             <div className="te">
               <img className="teamBadge" src={homeTeamImage}></img>
               <div className="row">
@@ -56,22 +54,12 @@ const BetCard = (props) => {
                 >
                   {teamNames[choice]}
                 </Typography>
-              </div>
-            </div>
-            <div className="te">
-              <div className="row">
                 <Typography
-                  style={{ fontWeight: "bold", justifyContent: "center" }}
+                  style={{ fontWeight: "bold", marginBottom: "1rem"}}
                   color="textSecondary"
                 >
-                  {`${teamNames[0]} vs ${teamNames[1]}`}
-                </Typography>
-                <Typography
-                  style={{ fontWeight: "bold", justifyContent: "center" }}
-                  color="textSecondary"
-                >
-                  {betValue}
-                </Typography>
+                  Amount Bet: {betValue}
+              </Typography>
               </div>
             </div>
             {isLive ? (
