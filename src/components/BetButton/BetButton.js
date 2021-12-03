@@ -75,9 +75,9 @@ const BetButton = (props) => {
           start={0.0}
           end={price}
           duration={1.3}
-          >
+        >
           +
-          </CountUp>
+        </CountUp>
       </Button>
       <StyledMenu
         id="demo-customized-menu"
