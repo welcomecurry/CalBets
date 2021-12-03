@@ -93,7 +93,7 @@ const BetCard = (props) => {
                       color="textSecondary"
                       variant="body2"
                     >
-                      Win Amount: {gain}
+                      {gameDone ? (<div>Win Amount: {gain}</div>) : (<div>In Progress</div>)}
                     </Typography>
                   </Typography>
                 </div>
