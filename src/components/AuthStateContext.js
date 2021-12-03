@@ -70,13 +70,18 @@ function AuthStateProvider({ children, Firebase }) {
 
   useEffect(() => {
     if (authState.status === AUTHENTICATED) {
-      const betsRef = collection(Firebase.firestore, "users", authState.user.uid, "bets");
+      const betsRef = collection(
+        Firebase.firestore,
+        "users",
+        authState.user.uid,
+        "bets"
+      );
       const unsub = onSnapshot(betsRef, (snapshot) => {
-        var userBets = {}
+        var userBets = {};
         snapshot.forEach((doc) => {
           userBets[doc.id] = doc.data();
         });
-        setUserBets(userBets);
+        if (Object.keys(userBets).length > 0) setUserBets(userBets);
       });
 
       // Stop listening to changes
@@ -85,14 +90,14 @@ function AuthStateProvider({ children, Firebase }) {
   }, [authState.status === AUTHENTICATED]);
 
   useEffect(async () => {
-      var games = {}
-      for (const betId in userBets) {
-        const bet = userBets[betId];
-        const game = await fetchGame(Firebase.firestore, bet.gameId);
-        games[bet.gameId] = game;
-      };
+    var games = {};
+    for (const betId in userBets) {
+      const bet = userBets[betId];
+      const game = await fetchGame(Firebase.firestore, bet.gameId);
+      games[bet.gameId] = game;
+    }
 
-      setUserGames(games)
+    if (Object.keys(games).length > 0) setUserGames(games);
   }, [userBets]);
 
   return (
