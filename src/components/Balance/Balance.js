@@ -5,11 +5,11 @@ const Balance = (props) => {
   const { value } = props;
   return (
     <Grid container spacing={0} justifyContent="center">
-      <Grid item component={Card} xs={12} md={3} className="">
-        <Card sx={{}}>
+      <Grid item component={Card} xs={12} md={2} className="">
+        <Card>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              <Avatar sx={{ backgroundColor: "#FDB515" }} aria-label="recipe">
                 ₿
               </Avatar>
             }

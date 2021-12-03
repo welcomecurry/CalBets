@@ -19,7 +19,7 @@ const SportSelector = (props) => {
                 m: 0.5,
                 backgroundColor:
                   sport === selectedSport
-                    ? "secondary.dark"
+                    ? "primary.dark"
                     : "secondary.light",
               }}
               variant="contained"

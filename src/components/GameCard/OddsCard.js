@@ -113,7 +113,7 @@ const OddsCard = (props) => {
               <Typography variant="body2">In Progress</Typography>
             ) : (
               <Typography variant="body2">
-                {new Date(gameStartTime).toLocaleString([], {
+                {new Date(gameStartTime + "Z").toLocaleString([], {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",
