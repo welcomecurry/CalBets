@@ -3,10 +3,6 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Link,
   Button,
-  Select,
-  MenuItem,
-  FormControl,
-  Box,
 } from "@mui/material";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
@@ -16,9 +12,10 @@ import { SignIn } from "../components/SignIn";
 import { SignUp } from "../components/SignUp";
 import {
   getOddsBySport,
-  getResultsBySport
+  getResultsBySport,
+  getSports
 } from "../services/JsonOddsAPI";
-// import { Sidebar } from "../components/Sidebar";
+import { SportSelector } from "../components/SportSelector";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
 
@@ -27,41 +24,44 @@ const Home = () => {
   const [isSignIn, setIsSignIn] = useState(false);
   const [odds, setOdds] = useState(null);
   const [results, setResults] = useState(null);
-  const [sport, setSport] = useState("");
-  // const [selectedLeague, setSelectedLeague] = useState("");
+  const [sports, setSports] = useState(null);
+  const [selectedSport, setSelectedSport] = useState("");
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   useEffect(async () => {
-    if (isAuthenticated && sport != "") {
-      const oddsData = await getOddsBySport(sport);
+    const sports = await getSports();
+    if (sports) setSports(sports);
+  }, []);
+
+  useEffect(async () => {
+    if (isAuthenticated && selectedSport != "") {
+      const [oddsData, resultsData] = await Promise.all([getOddsBySport(selectedSport), getResultsBySport(selectedSport)]);
       if (oddsData) setOdds(oddsData);
-      const resultsData = await getResultsBySport(sport);
+      console.log("odds")
+      console.log(oddsData)
+      console.log(sports)
       if (resultsData) setResults(resultsData.filter((e) => e.OddType === "Game"));
+      console.log("results")
+      console.log(resultsData)
       // setSelectedLeague("all");
     }
-  }, [sport]);
+  }, [selectedSport]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (sport === "") setSport("nba");
-      console.log("odds");
-      console.log(odds);
-      console.log("results");
-      console.log(results);
-      // if (selectedLeague === "") setSelectedLeague("all");
+      if (selectedSport === "") setSelectedSport("nba");
     } else {
       // reset state if user not logged in
-      setSport("");
+      setSelectedSport("");
       setOdds(null);
       setResults(null);
-      // setSelectedLeague("");
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
     setOdds(null)
     setResults(null)
-  }, [sport]);
+  }, [selectedSport]);
 
   return (
     <div>
@@ -94,33 +94,17 @@ const Home = () => {
           </RouterLink>
           </nav>
           <Balance value={userData.balance} />
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl>
-              <Select
-                sx={{ m: 1 }}
-                id="sport-selector"
-                value={sport}
-                onChange={(e) => setSport(e.target.value)}
-              >
-                <MenuItem value={"mlb"}>MLB</MenuItem>
-                <MenuItem value={"nba"}>NBA</MenuItem>
-                <MenuItem value={"nfl"}>NFL</MenuItem>
-                <MenuItem value={"nhl"}>NHL</MenuItem>
-                <MenuItem value={"tennis"}>Tennis</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-          {/* <Sidebar
-            selectedLeague={selectedLeague}
-            setSelectedLeague={setSelectedLeague}
-            odds={odds}
-          /> */}
+          <SportSelector
+            selectedSport={selectedSport}
+            setSelectedSport={setSelectedSport}
+            sports={sports}
+          />
           <GameCardList
             db={db}
             userId={authState.user.uid}
             odds={odds}
             results={results}
-            // selectedLeague={selectedLeague}
+            sports={sports}
           />
           <Button
             sx={{ m: 1, backgroundColor: "danger.light" }}

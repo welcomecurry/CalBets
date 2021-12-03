@@ -12,7 +12,7 @@ import "./OddsCard.css";
 // };
 
 const GameCardList = (props) => {
-  const { db, selectedLeague, odds, results, userId } = props;
+  const { db, odds, results, userId } = props;
   // const [upcomingOdds, setUpcomingOdds] = useState([]);
   const [startedOdds, setStartedOdds] = useState([]);
 
@@ -27,63 +27,68 @@ const GameCardList = (props) => {
   return (
     <div>
       <Box sx={{ border: "1px dashed grey" }}>
-        <div>Results</div>
-        {results == null ? (
-          <CircularProgress />
-        ) : results.length == 0 ? (
-          <div>Currently no results. Try again later.</div>
-        ) : (
-          results.map((e) => {
-            return (
-              <ResultCard
-                key={e.ID}
-                leagueName={e.Sport}
-                homeTeam={{
-                  name: "TODO",
-                  score: e.HomeScore,
-                }}
-                awayTeam={{
-                  name: "TODO",
-                  score: e.AwayScore,
-                }}
-                isLive={!e.Final}
-                userId={userId}
-              />
-            );
-          })
-        )}
-      </Box>
-      <Box sx={{ border: "1px dashed grey" }}>
         <div>Odds</div>
-        {odds == null ? (
+        {!odds ? (
           <CircularProgress />
         ) : odds.length == 0 ? (
           <div>Currently no odds. Try again later.</div>
         ) : (
-          odds.flatMap((e) => {
-            const elementOdds = e.Odds.filter((e) => e.OddType === "Game");
+          odds.flatMap((o) => {
+            const elementOdds = o.Odds.filter((e) => e.OddType === "Game");
 
             if (elementOdds.length > 0) {
+              // const gameResult = results.filter((r) => r.ID == o.ID)[0];
+              // console.log(gameResult);
               return (
                 <OddsCard
                   db={db}
-                  key={e.ID}
-                  gameId={e.ID}
-                  leagueName={e.Sport}
-                  gameStartTime={e.MatchTime}
+                  key={o.ID}
+                  gameId={o.ID}
+                  leagueName={null}
+                  gameStartTime={o.MatchTime}
                   homeTeam={{
-                    name: e.HomeTeam,
+                    name: o.HomeTeam,
                     price: elementOdds[0].MoneyLineHome,
+                    score: 0,
                   }}
                   awayTeam={{
-                    name: e.AwayTeam,
+                    name: o.AwayTeam,
                     price: elementOdds[0].MoneyLineAway,
+                    score: 0,
                   }}
                   isLive={false}
                   userId={userId}
                 />
               );
             }
+          })
+        )}
+      </Box>
+      <Box sx={{ border: "1px dashed grey" }}>
+        <div>Results</div>
+        {!results || !odds ? (
+          <CircularProgress />
+        ) : results.length == 0 ? (
+          <div>Currently no results. Try again later.</div>
+        ) : (
+          results.map((r) => {
+            const gameInfo = odds.filter((o) => o.ID == r.ID)[0];
+            return (
+              <ResultCard
+                key={r.ID}
+                leagueName={r.Sport}
+                homeTeam={{
+                  name: gameInfo?.HomeTeam || "homeTeam",
+                  score: r.HomeScore,
+                }}
+                awayTeam={{
+                  name: gameInfo?.AwayTeam || "awayTeam",
+                  score: r.AwayScore,
+                }}
+                isLive={!r.Final}
+                userId={userId}
+              />
+            );
           })
         )}
       </Box>
