@@ -75,9 +75,6 @@ const BetButton = (props) => {
           start={0.0}
           end={price}
           duration={1.3}
-          separator=","
-          decimals="2"
-          
           >
           +
           </CountUp>
