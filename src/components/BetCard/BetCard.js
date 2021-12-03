@@ -7,7 +7,7 @@ import CalBetsLogo from "../../CalBetsLogo.png";
 const BetCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
-  const { leagueName, gameStartTime, choice, teamNames, value: betValue, betDate } = props;
+  const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
 
   // useEffect(async () => {
   //   const image1 = await fetchTeamImage(teamNames[0]);
@@ -52,7 +52,7 @@ const BetCard = (props) => {
                   style={{ fontWeight: "bold" }}
                   color="textSecondary"
                 >
-                  {teamNames[choice]} TODO: BETTED ODDS
+                  {teamNames[choice]} {betPrice}
                 </Typography>
                 <Typography
                   style={{ fontWeight: "bold", marginBottom: "1rem"}}

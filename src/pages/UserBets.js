@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AUTHENTICATED } from "../utils/firebase";
@@ -5,11 +6,34 @@ import { Balance } from "../components/Balance/Balance";
 import { BetCard } from "../components/BetCard/BetCard";
 import { useAuthStateContext } from "../components/AuthStateContext";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import { getResultsByEventId } from "../services/JsonOddsAPI";
 
 const UserBets = () => {
   const { authState, userData, userBets, userGames, signOut } =
     useAuthStateContext();
+
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
+
+  useEffect(async () => {
+    if (isAuthenticated) {
+      const gameResults = await Promise.all(
+        Object.keys(userGames).flatMap((gameId) => {
+          console.log(userGames[gameId]);
+          if (!userGames[gameId]?.result) {
+            console.log("hey");
+            return getResultsByEventId(gameId);
+          }
+        })
+      );
+      const test = gameResults.flatMap((r) => {
+        const filtered = r.filter(
+          (o) => o.Final === true && o.OddType === "Game"
+        )[0];
+        console.log(filtered)
+        if (filtered) return filtered;
+      });
+    }
+  }, []);
 
   return (
     <div>
@@ -32,6 +56,7 @@ const UserBets = () => {
                   key={userBet.gameId}
                   teamNames={userGames[userBet.gameId].teams}
                   choice={userBet.choice}
+                  price={userBet.price}
                   value={userBet.value}
                   gameStartTime={userGames[userBet.gameId].date}
                   betDate={userBet.date}

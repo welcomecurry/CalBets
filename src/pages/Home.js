@@ -43,7 +43,6 @@ const Home = () => {
       if (resultsData) setResults(resultsData.filter((e) => e.OddType === "Game"));
       console.log("results")
       console.log(resultsData)
-      // setSelectedLeague("all");
     }
   }, [selectedSport]);
 
