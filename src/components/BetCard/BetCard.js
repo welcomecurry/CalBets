@@ -3,12 +3,16 @@ import { CardContent, Typography, Grid, LinearProgress, CircularProgress } from 
 
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
+import './BetCard.css'
 
 const BetCard = (props) => {
   const [bettedTeamImage, setBettedTeamImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
   const [imageLoaded, setImageLoaded] = useState(props.isLive);
-  const [gameDone, setGameDone] = useState(true);
+  const [gameDone, setGameDone] = useState(false);
+  const [wonBet, setWonBet] = useState(false);
+  const [lostBet, setLostBet] = useState(false);
+
   const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
 
   useEffect(async () => {
@@ -29,6 +33,12 @@ const BetCard = (props) => {
     return `rgba(131, ${r}, ${g}, ${b})`;
   };
 
+  const generateWinColor = () => {
+    if(wonBet) return "rgba(127, 255, 148, 0.88)";
+    else if(lostBet) return "rgba(255, 51, 51, 0.97)";
+    return "rgba(234, 196, 53, 0.96)" //In progress color
+  };
+
   return (
     <div className="container">
       <Grid container justifyContent="center">
@@ -38,7 +48,7 @@ const BetCard = (props) => {
           md={8}
           className={isLive ? "card" : "card card-foot"}
           style={{
-            borderBottom: `10px solid ${generateRandomrgbaColor()}`,
+            borderBottom: `10px solid ${generateWinColor()}`,
           }}
         >
           <CardContent>
