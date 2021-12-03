@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
 import { CardContent, Typography, Grid, LinearProgress } from "@mui/material";
 
-// import { fetchTeamImage } from "../../services/TeamImageAPI";
+import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
 
 const BetCard = (props) => {
-  const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
+  const [bettedTeamImage, setBettedTeamImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
   const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
 
-  // useEffect(async () => {
-  //   const image1 = await fetchTeamImage(teamNames[0]);
-  //   const image2 = await fetchTeamImage(teamNames[1]);
-
-  //   if (image1 && image1.teams) setTeamOneImage(image1.teams[0].strTeamBadge);
-  //   if (image2 && image2.teams) setTeamTwoImage(image2.teams[0].strTeamBadge);
-  // }, []);
+  useEffect(async () => {
+    const image1 = await fetchTeamImage(teamNames[1]);
+    if (image1 && image1.value) setBettedTeamImage(image1.value[0].contentUrl);
+  }, []);
 
   const generateRandomrgbaColor = () => {
     const randomBetween = (min, max) =>
@@ -46,7 +43,7 @@ const BetCard = (props) => {
                 {`${teamNames[0]} vs ${teamNames[1]}`}
             </Typography>
             <div className="te">
-              <img className="teamBadge" src={homeTeamImage}></img>
+              <img className="teamBadge" src={bettedTeamImage}></img>
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
