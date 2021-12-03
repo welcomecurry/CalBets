@@ -86,16 +86,17 @@ const createUserBet = async (db, userId, gameId, odds, value, choice) => {
     choice: choice,
     active: true,
     result: null,
+    gain: 0,
     date: Timestamp.fromDate(new Date()),
   });
 };
 
-const settleUserBet = async (db, userId, betId, result) => {
+const settleUserBet = async (db, userId, betId, result, gain) => {
   const betDoc = doc(db, "users", userId, "bets", betId);
   const docSnap = await getDoc(betDoc);
 
   if (docSnap.exists()) {
-    await updateDoc(betDoc, { active: false, result: result });
+    await updateDoc(betDoc, { active: false, gain: gain, result: result });
   }
 };
 

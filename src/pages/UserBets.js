@@ -34,14 +34,18 @@ const UserBets = () => {
             updateGame(db, userBet.gameId, {
               result: [gameResult.HomeScore, gameResult.AwayScore],
             });
-            settleUserBet(db, authState.user.uid, betId, betResult);
+
             if (betResult === "win") {
               const userOdd = userBet.odds[userBet.choice];
               if (userOdd > 0) {
-                const newBalance = userData.balance + userBet.value / 100 * userOdd + userBet.value;
+                const gain = (userBet.value / 100) * userOdd + userBet.value;
+                const newBalance = userData.balance + gain;
+                settleUserBet(db, authState.user.uid, betId, betResult, gain);
                 updateUserBalance(db, authState.user.uid, newBalance);
               } else {
-                const newBalance = userData.balance + userBet.value / -userOdd * 100 + userBet.value;
+                const gain = (userBet.value / -userOdd) * 100 + userBet.value;
+                const newBalance = userData.balance + gain;
+                settleUserBet(db, authState.user.uid, betId, betResult, gain);
                 updateUserBalance(db, authState.user.uid, newBalance);
               }
             }
@@ -70,8 +74,11 @@ const UserBets = () => {
                 <BetCard
                   key={userBet.gameId}
                   teamNames={userGames[userBet.gameId].teams}
+                  gameDone={userGames[userBet.gameId].hasOwnProperty("result")}
+                  result={userGames[userBet.gameId]?.result}
                   choice={userBet.choice}
-                  price={userBet.price}
+                  gain={userBet?.gain || 0}
+                  price={userBet.odds[userBet.choice]}
                   value={userBet.value}
                   gameStartTime={userGames[userBet.gameId].date}
                   betDate={userBet.date}

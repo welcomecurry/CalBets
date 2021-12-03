@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { CardContent, Typography, Grid, LinearProgress, CircularProgress } from "@mui/material";
+import {
+  CardContent,
+  Typography,
+  Grid,
+  LinearProgress,
+  CircularProgress,
+} from "@mui/material";
 
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
@@ -9,25 +15,35 @@ const BetCard = (props) => {
   const [bettedTeamImage, setBettedTeamImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
   const [imageLoaded, setImageLoaded] = useState(props.isLive);
-  const [gameDone, setGameDone] = useState(false);
-  const [wonBet, setWonBet] = useState(false);
-  const [lostBet, setLostBet] = useState(false);
 
-  const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
+  const {
+    result,
+    gain,
+    gameDone,
+    price: betPrice,
+    choice,
+    teamNames,
+    value: betValue,
+    betDate,
+  } = props;
 
   useEffect(async () => {
     const image1 = await fetchTeamImage(teamNames[1]);
-    if (image1 && image1.value) 
-    {
+    if (image1 && image1.value) {
       setBettedTeamImage(image1.value[0].contentUrl);
       setImageLoaded(true);
     }
   }, []);
 
   const generateWinColor = () => {
-    if(wonBet) return "rgba(127, 255, 148, 0.88)";
-    else if(lostBet) return "rgba(255, 51, 51, 0.97)";
-    return "rgba(234, 196, 53, 0.96)" //In progress color
+    if (!gameDone) return "rgba(234, 196, 53, 0.96)" //In progress color
+    if (result[choice] - result[1 - choice]) {
+      // bet won
+      return "rgba(127, 255, 148, 0.88)";
+    }
+    // bet lost
+    return "rgba(255, 51, 51, 0.97)";
+
   };
 
   return (
@@ -43,52 +59,44 @@ const BetCard = (props) => {
           }}
         >
           <CardContent>
-            <Typography
-                style={{ fontWeight: "bold"}}
-                color="textSecondary"
-              >
-                {`${teamNames[0]} vs ${teamNames[1]}`}
+            <Typography style={{ fontWeight: "bold" }} color="textSecondary">
+              {`${teamNames[0]} vs ${teamNames[1]}`}
             </Typography>
-            {gameDone ? (    
-              <div>       
-                <Typography
-                  style={{ margin: "1rem"}}
-                  color="textSecondary"
-                >
-                  Final Score:
+            {gameDone && (
+              <div>
+                <Typography style={{ margin: "1rem" }} color="textSecondary">
+                  Final Score
                 </Typography>
-                <Typography
-                  style={{ margin: "1rem"}}
-                  color="textPrimary"
-                >
-                  HomeTeamScore - AwayTeamScore
+                <Typography style={{ margin: "1rem", fontWeight: "bold" }} color="textPrimary">
+                  {`${result[0]} - ${result[1]}`}
                 </Typography>
-            </div> 
-            ) : (<div></div>)}
+              </div>
+            )}
             <div className="te">
-              { imageLoaded ? (<img className="teamBadge" src={bettedTeamImage}></img>) : <CircularProgress /> }
+              {imageLoaded ? (
+                <img className="teamBadge" src={bettedTeamImage}></img>
+              ) : (
+                <CircularProgress />
+              )}
               <div className="row">
-                <Typography
-                  style={{ fontWeight: "bold" }}
-                  color="textPrimary"
-                >
+                <Typography style={{ fontWeight: "bold" }} color="textPrimary">
                   {teamNames[choice]}: {betPrice}
                 </Typography>
                 <div>
                   <Typography
-                    style={{ fontWeight: "bold", marginBottom: "1rem"}}
+                    style={{ fontWeight: "bold", marginBottom: "1rem" }}
                     color="textPrimary"
                   >
                     Amount Bet: {betValue}
                     <Typography
-                    style={{ marginBottom: "1rem"}}
-                    color="textSecondary"
-                    variant="body2"
-                  >
-                    Win Amount:
+                      style={{ marginBottom: "1rem" }}
+                      color="textSecondary"
+                      variant="body2"
+                    >
+                      Win Amount: {gain}
+                    </Typography>
                   </Typography>
-                </Typography>
-              </div>
+                </div>
               </div>
             </div>
             {isLive ? (
