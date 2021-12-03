@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import {
-  Link,
-  Button,
-} from "@mui/material";
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { Link, Button } from "@mui/material";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 import { useAuthStateContext } from "../components/AuthStateContext";
 import { AUTHENTICATED } from "../utils/firebase";
@@ -13,12 +10,11 @@ import { SignUp } from "../components/SignUp";
 import {
   getOddsBySport,
   getResultsBySport,
-  getSports
+  getSports,
 } from "../services/JsonOddsAPI";
 import { SportSelector } from "../components/SportSelector";
 import { GameCardList } from "../components/GameCard/GameCardList";
 import { Balance } from "../components/Balance/Balance";
-
 
 const Home = () => {
   const { authState, db, userData, signOut } = useAuthStateContext();
@@ -36,14 +32,18 @@ const Home = () => {
 
   useEffect(async () => {
     if (isAuthenticated && selectedSport != "") {
-      const [oddsData, resultsData] = await Promise.all([getOddsBySport(selectedSport), getResultsBySport(selectedSport)]);
+      const [oddsData, resultsData] = await Promise.all([
+        getOddsBySport(selectedSport),
+        getResultsBySport(selectedSport),
+      ]);
       if (oddsData) setOdds(oddsData);
-      console.log("odds")
-      console.log(oddsData)
-      console.log(sports)
-      if (resultsData) setResults(resultsData.filter((e) => e.OddType === "Game"));
-      console.log("results")
-      console.log(resultsData)
+      console.log("odds");
+      console.log(oddsData);
+      console.log(sports);
+      if (resultsData)
+        setResults(resultsData.filter((e) => e.OddType === "Game"));
+      console.log("results");
+      console.log(resultsData);
     }
   }, [selectedSport]);
 
@@ -59,8 +59,8 @@ const Home = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    setOdds(null)
-    setResults(null)
+    setOdds(null);
+    setResults(null);
   }, [selectedSport]);
 
   return (
@@ -85,13 +85,11 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <nav>
-          </nav>
           <Balance value={userData.balance} />
           <RouterLink to="/user">
-            <Button sx={{ margin: "1rem"}} variant="contained">
-              <AccountBalanceWalletIcon/>
-               My Bets
+            <Button sx={{ margin: "1rem" }} variant="contained">
+              <AccountBalanceWalletIcon />
+              My Bets
             </Button>
           </RouterLink>
           <SportSelector

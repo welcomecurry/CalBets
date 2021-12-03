@@ -7,6 +7,7 @@ import { BetCard } from "../components/BetCard/BetCard";
 import { useAuthStateContext } from "../components/AuthStateContext";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { getResultsByEventId } from "../services/JsonOddsAPI";
+import { settleUserBet, updateUserBalance } from "../utils/firebaseFunctions";
 
 const UserBets = () => {
   const { authState, userData, userBets, userGames, signOut } =
@@ -17,21 +18,28 @@ const UserBets = () => {
   useEffect(async () => {
     if (isAuthenticated) {
       const gameResults = await Promise.all(
-        Object.keys(userGames).flatMap((gameId) => {
-          console.log(userGames[gameId]);
-          if (!userGames[gameId]?.result) {
-            console.log("hey");
-            return getResultsByEventId(gameId);
-          }
-        })
+        Object.keys(userBets)
+          .filter((k) => userBets[k].active)
+          .map((key) => {
+            const userBet = userBets[key];
+            const eventResult = getResultsByEventId(userBet.gameId);
+            return eventResult;
+          })
       );
-      const test = gameResults.flatMap((r) => {
-        const filtered = r.filter(
-          (o) => o.Final === true && o.OddType === "Game"
-        )[0];
-        console.log(filtered)
-        if (filtered) return filtered;
-      });
+
+      const gameResultsFinished = gameResults
+        .filter((r) => {
+          return r.length > 0 && r[0].Final === true;
+        })
+        .map((r) => r[0]);
+
+      console.log(gameResultsFinished);
+
+      // for (const result of gameResultsFinished) {
+      //   settleUserBet(db, userId, betId, result);
+      //   const newBalance = calculate;
+      //   updateUserBalance(db, userId, newValue);
+      // }
     }
   }, []);
 
@@ -41,11 +49,11 @@ const UserBets = () => {
         <div>
           <Balance value={userData.balance} />
           <RouterLink to="/">
-            <Button sx={{ margin: "1rem"}} variant="contained">
+            <Button sx={{ margin: "1rem" }} variant="contained">
               <MonetizationOnIcon />
               Place Bets
             </Button>
-      </RouterLink>
+          </RouterLink>
           <div>{authState.user.displayName} Placed Bets:</div>
           {userBets &&
             userGames &&

@@ -63,8 +63,20 @@ const createUserBet = async (db, userId, gameId, price, value, choice) => {
     value: value,
     gameId: gameId,
     choice: choice,
+    active: true,
+    result: null,
     date: Timestamp.fromDate(new Date()),
   });
+};
+
+const settleUserBet = async (db, userId, betId, result) => {
+  const betDoc = doc(db, "users", userId, "bets", betId);
+  const docSnap = await getDoc(betDoc);
+
+  if (docSnap.exists()) {
+    await setDoc(betDoc, { active: false, result: result });
+  }
+
 };
 
 export {
@@ -74,5 +86,6 @@ export {
   setGame,
   createUserData,
   createUserBet,
+  settleUserBet,
   updateUserBalance,
 };

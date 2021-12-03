@@ -27,30 +27,29 @@ const OddsCard = (props) => {
   const [awayImageLoaded, setAwayImageLoaded] = useState(props.isLive);
   const { db, gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
     props;
-    
+
   useEffect(async () => {
     const image1 = await fetchTeamImage(homeTeam.name);
     const image2 = await fetchTeamImage(awayTeam.name);
 
-    if (image1 && image1.value) 
-    {
+    if (image1 && image1.value) {
       setTeamOneImage(image1.value[0].contentUrl);
       setHomeImageLoaded(true);
     }
-    if (image2 && image2.value) 
-    {
+    if (image2 && image2.value) {
       setTeamTwoImage(image2.value[0].contentUrl);
       setAwayImageLoaded(true);
     }
   }, []);
 
   const generateRandomrgbaColor = () => {
-    const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+    const randomBetween = (min, max) =>
+      min + Math.floor(Math.random() * (max - min + 1));
     const r = randomBetween(0, 255);
     const g = randomBetween(0, 255);
     const b = randomBetween(0, 255);
     return `rgba(131, ${r}, ${g}, ${b})`;
-  }
+  };
 
   const handlePlaceBet = async (price, value, choice) => {
     const game = {
@@ -72,8 +71,8 @@ const OddsCard = (props) => {
           component={Card}
           className={isLive ? "card" : "card card-foot"}
           style={{
-            borderBottom: `10px solid ${generateRandomrgbaColor()}`
-           }}
+            borderBottom: `10px solid ${generateRandomrgbaColor()}`,
+          }}
         >
           <CardContent>
             <Typography
@@ -85,7 +84,11 @@ const OddsCard = (props) => {
             </Typography>
             <Typography variant="body2"></Typography>
             <div className="te">
-            { homeImageLoaded ? (<img className="teamBadge" src={homeTeamImage}></img>) : <CircularProgress /> }
+              {homeImageLoaded ? (
+                <img className="teamBadge" src={homeTeamImage}></img>
+              ) : (
+                <CircularProgress />
+              )}
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
@@ -103,7 +106,11 @@ const OddsCard = (props) => {
               </div>
             </div>
             <div className="te">
-            { awayImageLoaded ? (<img className="teamBadge" src={awayTeamImage}></img>) : <CircularProgress /> }
+              {awayImageLoaded ? (
+                <img className="teamBadge" src={awayTeamImage}></img>
+              ) : (
+                <CircularProgress />
+              )}
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
