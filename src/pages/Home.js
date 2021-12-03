@@ -86,14 +86,14 @@ const Home = () => {
       ) : (
         <div>
           <nav>
+          </nav>
+          <Balance value={userData.balance} />
           <RouterLink to="/user">
-            <Button variant="contained">
+            <Button sx={{ margin: "1rem"}} variant="contained">
               <AccountBalanceWalletIcon/>
                My Bets
             </Button>
           </RouterLink>
-          </nav>
-          <Balance value={userData.balance} />
           <SportSelector
             selectedSport={selectedSport}
             setSelectedSport={setSelectedSport}

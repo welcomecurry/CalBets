@@ -13,17 +13,16 @@ const UserBets = () => {
 
   return (
     <div>
-      <RouterLink to="/">
-        <Button variant="contained">
-          <MonetizationOnIcon />
-          Place Bets
-        </Button>
-      </RouterLink>
       {isAuthenticated && (
         <div>
-          <div>Name: {authState.user.displayName}</div>
-          <div>Email: {authState.user.email}</div>
           <Balance value={userData.balance} />
+          <RouterLink to="/">
+            <Button sx={{ margin: "1rem"}} variant="contained">
+              <MonetizationOnIcon />
+              Place Bets
+            </Button>
+      </RouterLink>
+          <div>{authState.user.displayName} Placed Bets:</div>
           {userBets &&
             userGames &&
             Object.keys(userBets).map((key) => {

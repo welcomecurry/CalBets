@@ -4,7 +4,7 @@ import { red } from "@mui/material/colors";
 const Balance = (props) => {
   const { value } = props;
   return (
-    <Grid container spacing={0} justifyContent="center">
+    <Grid sx={{ marginTop: "0.5rem" }} container spacing={0} justifyContent="center">
       <Grid item component={Card} xs={12} md={2} className="">
         <Card>
           <CardHeader
