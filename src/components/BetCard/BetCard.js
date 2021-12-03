@@ -8,6 +8,7 @@ const BetCard = (props) => {
   const [bettedTeamImage, setBettedTeamImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
   const [imageLoaded, setImageLoaded] = useState(props.isLive);
+  const [gameDone, setGameDone] = useState(true);
   const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
 
   useEffect(async () => {
@@ -47,6 +48,22 @@ const BetCard = (props) => {
               >
                 {`${teamNames[0]} vs ${teamNames[1]}`}
             </Typography>
+            {gameDone ? (    
+              <div>       
+                <Typography
+                  style={{ margin: "1rem"}}
+                  color="textSecondary"
+                >
+                  Final Score:
+                </Typography>
+                <Typography
+                  style={{ margin: "1rem"}}
+                  color="textPrimary"
+                >
+                  HomeTeamScore - AwayTeamScore
+                </Typography>
+            </div> 
+            ) : (<div></div>)}
             <div className="te">
               { imageLoaded ? (<img className="teamBadge" src={bettedTeamImage}></img>) : <CircularProgress /> }
               <div className="row">
