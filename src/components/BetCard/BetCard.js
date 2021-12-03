@@ -28,9 +28,9 @@ const BetCard = (props) => {
   } = props;
 
   useEffect(async () => {
-    const image1 = await fetchTeamImage(teamNames[1]);
-    if (image1 && image1.value) {
-      setBettedTeamImage(image1.value[0].contentUrl);
+    const image = await fetchTeamImage(teamNames[choice]);
+    if (image && image.value) {
+      setBettedTeamImage(image.value[0].contentUrl);
       setImageLoaded(true);
     }
   }, []);
