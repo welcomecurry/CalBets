@@ -37,7 +37,7 @@ const BetCard = (props) => {
 
   const generateWinColor = () => {
     if (!gameDone) return "rgba(234, 196, 53, 0.96)" //In progress color
-    if (result[choice] - result[1 - choice]) {
+    if (result[choice] - result[1 - choice] > 0) {
       // bet won
       return "rgba(127, 255, 148, 0.88)";
     }
