@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CardContent, Typography, Grid, LinearProgress } from "@mui/material";
+import { CardContent, Typography, Grid, LinearProgress, CircularProgress } from "@mui/material";
 
 import { fetchTeamImage } from "../../services/TeamImageAPI";
 import CalBetsLogo from "../../CalBetsLogo.png";
@@ -7,11 +7,16 @@ import CalBetsLogo from "../../CalBetsLogo.png";
 const BetCard = (props) => {
   const [bettedTeamImage, setBettedTeamImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
+  const [imageLoaded, setImageLoaded] = useState(props.isLive);
   const { gameStartTime, price: betPrice, choice, teamNames, value: betValue, betDate } = props;
 
   useEffect(async () => {
     const image1 = await fetchTeamImage(teamNames[1]);
-    if (image1 && image1.value) setBettedTeamImage(image1.value[0].contentUrl);
+    if (image1 && image1.value) 
+    {
+      setBettedTeamImage(image1.value[0].contentUrl);
+      setImageLoaded(true);
+    }
   }, []);
 
   const generateRandomrgbaColor = () => {
@@ -43,7 +48,7 @@ const BetCard = (props) => {
                 {`${teamNames[0]} vs ${teamNames[1]}`}
             </Typography>
             <div className="te">
-              <img className="teamBadge" src={bettedTeamImage}></img>
+              { imageLoaded ? (<img className="teamBadge" src={bettedTeamImage}></img>) : <CircularProgress /> }
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}

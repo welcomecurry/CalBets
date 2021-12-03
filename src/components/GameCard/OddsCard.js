@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 
 import { BetButton } from "../BetButton/BetButton";
@@ -22,6 +23,8 @@ const OddsCard = (props) => {
   const [homeTeamImage, setTeamOneImage] = useState(CalBetsLogo);
   const [awayTeamImage, setTeamTwoImage] = useState(CalBetsLogo);
   const [isLive, setIsLive] = useState(props.isLive);
+  const [homeImageLoaded, setHomeImageLoaded] = useState(props.isLive);
+  const [awayImageLoaded, setAwayImageLoaded] = useState(props.isLive);
   const { db, gameId, leagueName, gameStartTime, userId, homeTeam, awayTeam } =
     props;
     
@@ -29,8 +32,16 @@ const OddsCard = (props) => {
     const image1 = await fetchTeamImage(homeTeam.name);
     const image2 = await fetchTeamImage(awayTeam.name);
 
-    if (image1 && image1.value) setTeamOneImage(image1.value[0].contentUrl);
-    if (image2 && image2.value) setTeamTwoImage(image2.value[0].contentUrl);
+    if (image1 && image1.value) 
+    {
+      setTeamOneImage(image1.value[0].contentUrl);
+      setHomeImageLoaded(true);
+    }
+    if (image2 && image2.value) 
+    {
+      setTeamTwoImage(image2.value[0].contentUrl);
+      setAwayImageLoaded(true);
+    }
   }, []);
 
   const generateRandomrgbaColor = () => {
@@ -74,7 +85,7 @@ const OddsCard = (props) => {
             </Typography>
             <Typography variant="body2"></Typography>
             <div className="te">
-              <img className="teamBadge" src={homeTeamImage}></img>
+            { homeImageLoaded ? (<img className="teamBadge" src={homeTeamImage}></img>) : <CircularProgress /> }
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
@@ -92,7 +103,7 @@ const OddsCard = (props) => {
               </div>
             </div>
             <div className="te">
-              <img className="teamBadge" src={awayTeamImage}></img>
+            { awayImageLoaded ? (<img className="teamBadge" src={awayTeamImage}></img>) : <CircularProgress /> }
               <div className="row">
                 <Typography
                   style={{ fontWeight: "bold" }}
