@@ -24,15 +24,6 @@ const BetCard = (props) => {
     }
   }, []);
 
-  const generateRandomrgbaColor = () => {
-    const randomBetween = (min, max) =>
-      min + Math.floor(Math.random() * (max - min + 1));
-    const r = randomBetween(0, 255);
-    const g = randomBetween(0, 255);
-    const b = randomBetween(0, 255);
-    return `rgba(131, ${r}, ${g}, ${b})`;
-  };
-
   const generateWinColor = () => {
     if(wonBet) return "rgba(127, 255, 148, 0.88)";
     else if(lostBet) return "rgba(255, 51, 51, 0.97)";
