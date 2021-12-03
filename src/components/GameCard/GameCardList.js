@@ -60,27 +60,30 @@ const GameCardList = (props) => {
         ) : odds.length == 0 ? (
           <div>Currently no odds. Try again later.</div>
         ) : (
-          odds.map((e) => {
-            return (
-              <OddsCard
-                db={db}
-                key={e.ID}
-                gameId={e.ID}
-                leagueName={e.Sport}
-                gameStartTime={e.MatchTime}
-                homeTeam={{
-                  name: e.HomeTeam,
-                  price: e.Odds[0].TotalNumber,
-                }}
-                // TODO: FIND OUT WHY SOME ODDS ONLY ONE VALUE
-                awayTeam={{
-                  name: e.AwayTeam,
-                  price: e.Odds[0].TotalNumber,
-                }}
-                isLive={false}
-                userId={userId}
-              />
-            );
+          odds.flatMap((e) => {
+            const elementOdds = e.Odds.filter((e) => e.OddType === "Game");
+
+            if (elementOdds.length > 0) {
+              return (
+                <OddsCard
+                  db={db}
+                  key={e.ID}
+                  gameId={e.ID}
+                  leagueName={e.Sport}
+                  gameStartTime={e.MatchTime}
+                  homeTeam={{
+                    name: e.HomeTeam,
+                    price: elementOdds[0].MoneyLineHome,
+                  }}
+                  awayTeam={{
+                    name: e.AwayTeam,
+                    price: elementOdds[0].MoneyLineAway,
+                  }}
+                  isLive={false}
+                  userId={userId}
+                />
+              );
+            }
           })
         )}
       </Box>
