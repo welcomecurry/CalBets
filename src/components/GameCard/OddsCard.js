@@ -16,7 +16,7 @@ import CalBetsLogo from "../../CalBetsLogo.png";
 import {
   setGame,
   createUserBet,
-  updateUserBalance,
+  updateUserBalanceOnPlaceBet,
 } from "../../utils/firebaseFunctions";
 
 const OddsCard = (props) => {
@@ -51,14 +51,15 @@ const OddsCard = (props) => {
     return `rgba(131, ${r}, ${g}, ${b})`;
   };
 
-  const handlePlaceBet = async (price, value, choice) => {
+  const handlePlaceBet = async (value, choice) => {
     const game = {
       teams: [homeTeam.name, awayTeam.name],
       date: Timestamp.fromDate(new Date(gameStartTime)),
     };
     await setGame(db, gameId, game);
-    await createUserBet(db, userId, gameId, price, value, choice);
-    await updateUserBalance(db, userId, value);
+    const odds = [parseInt(homeTeam.price), parseInt(awayTeam.price)]
+    await createUserBet(db, userId, gameId, odds, value, choice);
+    await updateUserBalanceOnPlaceBet(db, userId, value);
   };
 
   return (

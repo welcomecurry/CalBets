@@ -105,7 +105,8 @@ const BetButton = (props) => {
               disabled={betValue.length == 0 || parseFloat(betValue) <= 0}
               onClick={(e) => {
                 e.preventDefault();
-                handlePlaceBet(price, parseFloat(betValue), choice);
+                handlePlaceBet(parseFloat(betValue), choice);
+                handleClose();
               }}
             >
               Bet

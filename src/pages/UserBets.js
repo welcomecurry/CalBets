@@ -7,39 +7,46 @@ import { BetCard } from "../components/BetCard/BetCard";
 import { useAuthStateContext } from "../components/AuthStateContext";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { getResultsByEventId } from "../services/JsonOddsAPI";
-import { settleUserBet, updateUserBalance } from "../utils/firebaseFunctions";
+import {
+  settleUserBet,
+  updateGame,
+  updateUserBalance,
+} from "../utils/firebaseFunctions";
 
 const UserBets = () => {
-  const { authState, userData, userBets, userGames, signOut } =
+  const { db, authState, userData, userBets, userGames, signOut } =
     useAuthStateContext();
 
   const isAuthenticated = authState.status === AUTHENTICATED && userData;
 
   useEffect(async () => {
     if (isAuthenticated) {
-      const gameResults = await Promise.all(
-        Object.keys(userBets)
-          .filter((k) => userBets[k].active)
-          .map((key) => {
-            const userBet = userBets[key];
-            const eventResult = getResultsByEventId(userBet.gameId);
-            return eventResult;
-          })
-      );
-
-      const gameResultsFinished = gameResults
-        .filter((r) => {
-          return r.length > 0 && r[0].Final === true;
-        })
-        .map((r) => r[0]);
-
-      console.log(gameResultsFinished);
-
-      // for (const result of gameResultsFinished) {
-      //   settleUserBet(db, userId, betId, result);
-      //   const newBalance = calculate;
-      //   updateUserBalance(db, userId, newValue);
-      // }
+      Object.keys(userBets)
+        .filter((betId) => userBets[betId].active)
+        .map(async (betId) => {
+          const userBet = userBets[betId];
+          const r = await getResultsByEventId(userBet.gameId);
+          if (r.length > 0 && r[0].Final == true) {
+            const gameResult = r[0];
+            const winner =
+              gameResult.HomeScore - gameResult.AwayScore > 0 ? 0 : 1;
+            const betResult = winner === userBet.choice ? "win" : "loss";
+            updateGame(db, userBet.gameId, {
+              result: [gameResult.HomeScore, gameResult.AwayScore],
+            });
+            settleUserBet(db, authState.user.uid, betId, betResult);
+            if (betResult === "win") {
+              const userOdd = userBet.odds[userBet.choice];
+              if (userOdd > 0) {
+                const newBalance = userData.balance + userBet.value / 100 * userOdd + userBet.value;
+                updateUserBalance(db, authState.user.uid, newBalance);
+              } else {
+                const newBalance = userData.balance + userBet.value / -userOdd * 100 + userBet.value;
+                updateUserBalance(db, authState.user.uid, newBalance);
+              }
+            }
+          }
+        });
     }
   }, []);
 
